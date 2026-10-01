@@ -67,88 +67,171 @@ from pydantic import BaseModel, Field, ConfigDict
 
 Money = Decimal  # always quantized via domain.money.q()
 
-class AccountType(StrEnum): HEADER="Header"; ASSET="Asset"; LIABILITY="Liability"; EQUITY="Equity"; REVENUE="Revenue"; EXPENSE="Expense"
-class Statement(StrEnum): BS="BS"; PL="PL"
-class NormalBalance(StrEnum): DEBIT="Debit"; CREDIT="Credit"
+
+class AccountType(StrEnum):
+    HEADER = "Header"
+    ASSET = "Asset"
+    LIABILITY = "Liability"
+    EQUITY = "Equity"
+    REVENUE = "Revenue"
+    EXPENSE = "Expense"
+
+
+class Statement(StrEnum):
+    BS = "BS"
+    PL = "PL"
+
+
+class NormalBalance(StrEnum):
+    DEBIT = "Debit"
+    CREDIT = "Credit"
+
 
 class CoaAccount(BaseModel):
     model_config = ConfigDict(frozen=True)
-    code: str; name: str; account_type: AccountType; parent_code: str | None
-    statement: Statement; cf_category: str | None; normal_balance: NormalBalance | None
+    code: str
+    name: str
+    account_type: AccountType
+    parent_code: str | None
+    statement: Statement
+    cf_category: str | None
+    normal_balance: NormalBalance | None
 
-class TbRow(BaseModel):                      # one raw row, as in the file
+
+class TbRow(BaseModel):  # one raw row, as in the file
     model_config = ConfigDict(frozen=True)
-    source_file: str; row_index: int          # 0-based data row index (header excluded)
-    account_code: str; account_name: str; currency: str; debit: Money; credit: Money
+    source_file: str
+    row_index: int  # 0-based data row index (header excluded)
+    account_code: str
+    account_name: str
+    currency: str
+    debit: Money
+    credit: Money
+
 
 class FxRate(BaseModel):
     model_config = ConfigDict(frozen=True)
-    id: str                                   # f"{currency}/{rate_type}"  e.g. "GBP/period_average"
-    currency: str; rate_type: str; rate: Decimal; period: str
-    is_fallback: bool = False                 # set when used in place of a missing rate
+    id: str  # f"{currency}/{rate_type}"  e.g. "GBP/period_average"
+    currency: str
+    rate_type: str
+    rate: Decimal
+    period: str
+    is_fallback: bool = False  # set when used in place of a missing rate
 
-class LineageKind(StrEnum): TB_ROW="TB_ROW"; FX="FX"; JE="JE"; TRANSLATION_DIFF="TRANSLATION_DIFF"; HUMAN="HUMAN"
+
+class LineageKind(StrEnum):
+    TB_ROW = "TB_ROW"
+    FX = "FX"
+    JE = "JE"
+    TRANSLATION_DIFF = "TRANSLATION_DIFF"
+    HUMAN = "HUMAN"
+
+
 class LineageRef(BaseModel):
-    kind: LineageKind; ref: str               # "trial_balance.csv#3" | "GBP/period_average" | "JE-001#2" | "run:<id>" | "decision:<uuid>"
-    amount: Money | None = None               # contribution in functional currency (signed, debit positive)
+    kind: LineageKind
+    ref: str  # "trial_balance.csv#3" | "GBP/period_average" | "JE-001#2" | "run:<id>" | "decision:<uuid>"
+    amount: Money | None = None  # contribution in functional currency (signed, debit positive)
     note: str | None = None
 
-class PostedLine(BaseModel):                  # one account after translation/dedupe/posting
-    account_code: str; account_name: str
-    debit: Money; credit: Money               # functional currency
-    net: Money                                # debit - credit
-    mapped: bool                              # False for UNMAPPED bucket (e.g. 9999)
+
+class PostedLine(BaseModel):  # one account after translation/dedupe/posting
+    account_code: str
+    account_name: str
+    debit: Money
+    credit: Money  # functional currency
+    net: Money  # debit - credit
+    mapped: bool  # False for UNMAPPED bucket (e.g. 9999)
     lineage: list[LineageRef]
 
-class Severity(StrEnum): INFO="INFO"; WARN="WARN"; ESCALATE="ESCALATE"; BLOCK="BLOCK"
-class Decision(StrEnum): ACCEPTED="ACCEPTED"; QUARANTINED="QUARANTINED"; REJECTED="REJECTED"
+
+class Severity(StrEnum):
+    INFO = "INFO"
+    WARN = "WARN"
+    ESCALATE = "ESCALATE"
+    BLOCK = "BLOCK"
+
+
+class Decision(StrEnum):
+    ACCEPTED = "ACCEPTED"
+    QUARANTINED = "QUARANTINED"
+    REJECTED = "REJECTED"
+
 
 class Finding(BaseModel):
-    rule_id: str                              # "R001" | "H-TB-01" | "R013" (LLM intent)
+    rule_id: str  # "R001" | "H-TB-01" | "R013" (LLM intent)
     severity: Severity
-    title: str                                # short, finance-user language
-    message: str                              # one or two sentences, finance-user language, numbers formatted
-    evidence: dict[str, str | int | list[str] | list[int]]   # exact values used; Decimals as strings
+    title: str  # short, finance-user language
+    message: str  # one or two sentences, finance-user language, numbers formatted
+    evidence: dict[str, str | int | list[str] | list[int]]  # exact values used; Decimals as strings
     suggested_action: str | None = None
-    produced_by: str = "rule"                 # "rule" | "llm:intent_reviewer"
+    produced_by: str = "rule"  # "rule" | "llm:intent_reviewer"
+
 
 class JeLine(BaseModel):
-    account: str; debit: Money; credit: Money; memo: str = ""
+    account: str
+    debit: Money
+    credit: Money
+    memo: str = ""
+
+
 class JournalEntry(BaseModel):
-    id: str; description: str; date: str; source: str; lines: list[JeLine]
-    version: int = 1                          # bumps when a human edits & resubmits
+    id: str
+    description: str
+    date: str
+    source: str
+    lines: list[JeLine]
+    version: int = 1  # bumps when a human edits & resubmits
+
 
 class FixCandidate(BaseModel):
-    label: str                                # "Correct credit to 28,500.00"
+    label: str  # "Correct credit to 28,500.00"
     rationale: str
     lines: list[JeLine]
-    revalidation: list[Finding] = []          # filled by code
-    resolves: bool = False                    # True iff revalidation has no BLOCK/ESCALATE
+    revalidation: list[Finding] = []  # filled by code
+    resolves: bool = False  # True iff revalidation has no BLOCK/ESCALATE
 
-class ImpactLine(BaseModel): account_code: str; account_name: str; delta_net: Money; depth: int
-class Impact(BaseModel): lines: list[ImpactLine]; net_income_delta: Money; total_assets_delta: Money; total_liabilities_delta: Money; total_equity_delta: Money
+
+class ImpactLine(BaseModel):
+    account_code: str
+    account_name: str
+    delta_net: Money
+    depth: int
+
+
+class Impact(BaseModel):
+    lines: list[ImpactLine]
+    net_income_delta: Money
+    total_assets_delta: Money
+    total_liabilities_delta: Money
+    total_equity_delta: Money
+
 
 class EntryResult(BaseModel):
     entry: JournalEntry
     findings: list[Finding]
     decision: Decision
-    explanation: str | None                   # LLM or template
-    explanation_source: str                   # "llm" | "template" | "none"
+    explanation: str | None  # LLM or template
+    explanation_source: str  # "llm" | "template" | "none"
     fix_candidates: list[FixCandidate]
     impact: Impact
     trace_id: str
 
-class HealthFinding(Finding):                 # same shape, different id namespace
+
+class HealthFinding(Finding):  # same shape, different id namespace
     file: str
     policy_applied: str | None = None
 
+
 class RunManifest(BaseModel):
-    run_id: str; created_at: str; code_version: str
-    input_hashes: dict[str, str]              # file → sha256
-    config_hash: str; llm_mode: str
-    counts: dict[str, int]                    # accepted/quarantined/rejected
+    run_id: str
+    created_at: str
+    code_version: str
+    input_hashes: dict[str, str]  # file → sha256
+    config_hash: str
+    llm_mode: str
+    counts: dict[str, int]  # accepted/quarantined/rejected
     invariants: dict[str, bool]
-    status: str                               # "OK" | "FAILED_INVARIANT"
+    status: str  # "OK" | "FAILED_INVARIANT"
 ```
 
 `domain/money.py`: `q(x: Decimal) -> Decimal` (quantize 0.01 HALF_UP), `parse_money(s: str|int|float) -> Decimal` (via `str()`), `fmt(x) -> "1,234,567.89"`, `fmt_signed`.
@@ -175,10 +258,18 @@ class RunManifest(BaseModel):
 Interface (`rules/base.py`):
 ```python
 class RuleContext(BaseModel):  # built once per batch
-    coa: CoaTree; base_ledger: dict[str, PostedLine]; ratebook: RateBook; settings: Settings
-    tb_rows: list[TbRow]; batch: list[JournalEntry]
+    coa: CoaTree
+    base_ledger: dict[str, PostedLine]
+    ratebook: RateBook
+    settings: Settings
+    tb_rows: list[TbRow]
+    batch: list[JournalEntry]
+
+
 class Rule(Protocol):
-    RULE_ID: str; TITLE: str
+    RULE_ID: str
+    TITLE: str
+
     def check(self, entry: JournalEntry, ctx: RuleContext) -> list[Finding]: ...
 ```
 Registry `rules/__init__.py` exposes `ALL_RULES: list[Rule]` in ID order. `validator.run_rules(entry, ctx) -> list[Finding]`.
@@ -220,16 +311,24 @@ class IntentReview(BaseModel):
     consistent: bool
     confidence: float = Field(ge=0, le=1)
     reason: str = Field(max_length=400)
-    implied_accounts: list[str] = []      # codes the description implies should be touched; whitelisted
+    implied_accounts: list[str] = []  # codes the description implies should be touched; whitelisted
+
+
 class Explanation(BaseModel):
-    summary: str = Field(max_length=300)    # one sentence a controller reads first
-    details: list[str] = Field(max_items=5) # one bullet per finding, same order as findings
+    summary: str = Field(max_length=300)  # one sentence a controller reads first
+    details: list[str] = Field(max_items=5)  # one bullet per finding, same order as findings
     next_step: str = Field(max_length=200)
+
+
 class ProposedFix(BaseModel):
-    label: str; rationale: str; lines: list[JeLine]
+    label: str
+    rationale: str
+    lines: list[JeLine]
+
+
 class FixProposals(BaseModel):
     candidates: list[ProposedFix] = Field(max_items=3)
-    needs_human_input: str | None = None    # question to the preparer when the fix can't be inferred
+    needs_human_input: str | None = None  # question to the preparer when the fix can't be inferred
 ```
 
 ### 5.3 Prompts — `llm/prompts/*.md` (loaded as text, versioned by file hash recorded in trace)
@@ -272,9 +371,14 @@ Each role: `run(entry, findings, ctx, tracer) -> (output, meta)`; builds payload
 State (`graph/state.py`):
 ```python
 class EntryState(TypedDict):
-    entry: JournalEntry; findings: list[Finding]; decision: Decision | None
-    explanation: str | None; explanation_source: str; fix_candidates: list[FixCandidate]
-    iteration: int; trace_id: str
+    entry: JournalEntry
+    findings: list[Finding]
+    decision: Decision | None
+    explanation: str | None
+    explanation_source: str
+    fix_candidates: list[FixCandidate]
+    iteration: int
+    trace_id: str
 ```
 Nodes: `validate` → `intent_review` → `decide` → (if not ACCEPTED) `explain` → `propose_fix` → `revalidate_candidates` → END; conditional edge from `revalidate_candidates`: if no candidate `resolves` and `iteration < 2` → `propose_fix` with the failed revalidation findings appended; else END. `run_batch(entries, ctx) -> list[EntryResult]` invokes the compiled graph per entry (sequentially — 10 entries; note parallelism in doc).
 

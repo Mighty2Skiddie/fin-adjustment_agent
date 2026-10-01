@@ -29,4 +29,10 @@ should be able to disagree with any line here and know exactly what changes.
 
 *(Claude Code appends here whenever a spec ambiguity is resolved during implementation.)*
 
-- …
+- D1 (Phase 0): Frontend uses React 19 (what `npm create vite` and current shadcn/ui resolve to) instead of the spec's React 18 — current shadcn components rely on ref-as-prop, which React 18 does not support.
+- D2 (Phase 0): Added an optional `llm-openai` extra / `openai` provider alongside google_genai / groq / anthropic; the default stays google_genai + cassette mode.
+- D3 (Phase 0): `.gitattributes` marks `inputs/**` as `-text` so git never rewrites line endings in the raw data (input file hashes feed `run_id`).
+- D4 (pre-build, approved): R009 applies per account using the entry's net movement on that account (so JE-008's 2170 lines cancel). §7 `rule_ids` are corrected to what that rule produces; decisions are unchanged.
+- D5 (pre-build): The translation difference line is part of the base ledger, so 3310 base = 180,000.00 + 182,460.20 = 362,460.20 Cr and the base and posted TB both net to 0.00.
+- D6 (pre-build): R007b computes the expected revaluation only for currencies that have a period-end rate; GBP is excluded with a note, so the expected values are EUR-only (10,730.20 / 19,809.60).
+- D7 (pre-build): Fuzzy candidate matching (H-PP-02, R002b) only considers postable, non-structural accounts; otherwise header `6000 Operating Expenses` outranks `6900`.

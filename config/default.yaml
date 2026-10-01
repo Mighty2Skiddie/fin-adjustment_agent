@@ -1,0 +1,28 @@
+period:
+  id: "2024-Q4"
+  start: "2024-10-01"
+  end: "2024-12-31"
+functional_currency: USD
+fx:
+  translation_mode: system            # system | erp_pretranslated
+  balance_sheet_rate: period_end      # every TB row translated at period_end for a point-in-time TB (ASSUMPTIONS A2)
+  missing_rate_policy: fallback_average   # block | fallback_average | fallback_opening
+  translation_difference_account: "3310"  # where the translation difference is posted (ASSUMPTIONS A3)
+materiality:
+  imbalance_tolerance_abs: "1.00"         # Decimal strings
+  imbalance_tolerance_pct: "0.001"        # of total debits
+thresholds:
+  magnitude_info_pct: "0.20"
+  magnitude_warn_pct: "0.50"
+  fuzzy_match_min_score: 80               # rapidfuzz token_set_ratio 0-100
+  mapping_confidence_auto: "0.85"         # proposals below this always go to a human (none auto-apply in this slice)
+llm:
+  mode: cassette                          # cassette | live | off   (off = deterministic templates only)
+  provider: google_genai                  # google_genai | groq | anthropic | openai | ollama
+  model: ${LLM_MODEL:-gemini-2.5-flash}   # from env; see .env.example
+  temperature: 0
+  max_retries: 1
+  cassette_dir: evals/cassettes
+observability:
+  trace_dir: output/traces
+  langfuse_enabled: false                 # true only if LANGFUSE_* env present

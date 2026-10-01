@@ -1,0 +1,1 @@
+"""Manual Adjustments Agent."""

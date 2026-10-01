@@ -1,0 +1,4 @@
+* text=auto eol=lf
+inputs/** -text
+*.pdf binary
+*.png binary
