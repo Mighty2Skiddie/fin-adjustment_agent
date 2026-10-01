@@ -1,0 +1,474 @@
+[
+  {
+    "assumption": "A3",
+    "evidence": {
+      "above_materiality": "true",
+      "active_delta": "182460.20",
+      "active_policy": "fallback_average",
+      "materiality_tolerance": "1.00",
+      "pe_gbp_avg": {
+        "credit": "71077000.00",
+        "debit": "71259460.20",
+        "delta": "182460.20"
+      },
+      "pe_gbp_open": {
+        "credit": "71077000.00",
+        "debit": "71254100.30",
+        "delta": "177100.30"
+      },
+      "raw": {
+        "credit": "71077000.00",
+        "debit": "71072200.00",
+        "delta": "-4800.00"
+      },
+      "translation_difference_account": "3310",
+      "usd_only": {
+        "credit": "71077000.00",
+        "debit": "69834500.00",
+        "delta": "-1242500.00"
+      }
+    },
+    "file": "trial_balance.csv",
+    "id": "H-TB-01",
+    "message": "After translation the trial balance is out by +182,460.20 (debits 71,259,460.20, credits 71,077,000.00). Under other FX policies: raw -4,800.00; usd_only -1,242,500.00; pe_gbp_avg +182,460.20; pe_gbp_open +177,100.30. The difference is posted to 3310 as a flagged translation-difference line, never silently absorbed.",
+    "policy_applied": "fx.missing_rate_policy=fallback_average",
+    "severity": "CRITICAL",
+    "suggested_action": "Confirm the FX policy (Clarifying Q1) and investigate the source TB imbalance before relying on statements.",
+    "title": "TB does not balance; imbalance depends on FX policy"
+  },
+  {
+    "assumption": "A5",
+    "evidence": {
+      "duplicates": [
+        {
+          "account_code": "6310",
+          "amounts": [
+            "245000.00",
+            "38500.00"
+          ],
+          "currency": "USD",
+          "rows": [
+            46,
+            47
+          ],
+          "summed": "283500.00"
+        }
+      ]
+    },
+    "file": "trial_balance.csv",
+    "id": "H-TB-02",
+    "message": "6310 USD appears 2 times (245,000.00, 38,500.00), summed to 283,500.00. The rows are added together as the TB convention requires, but a repeated row in one currency may be a double-posting.",
+    "policy_applied": "duplicate same-currency rows are summed",
+    "severity": "HIGH",
+    "suggested_action": "Confirm with the TB preparer whether each repeated row is a separate balance or a double-posting; if duplicated, the account is overstated by the extra row.",
+    "title": "Duplicate account rows in the same currency"
+  },
+  {
+    "assumption": "A6",
+    "evidence": {
+      "orphans": [
+        {
+          "account_code": "9999",
+          "account_name": "Suspense - Unmapped",
+          "credit": "0.00",
+          "debit": "12400.00",
+          "rows": [
+            61
+          ]
+        }
+      ]
+    },
+    "file": "trial_balance.csv",
+    "id": "H-TB-03",
+    "message": "Not in the chart of accounts: 9999 Suspense - Unmapped (debit 12,400.00, credit 0.00). Carried as an unmapped balance and excluded from every COA subtotal.",
+    "policy_applied": "orphan accounts held in UNMAPPED bucket",
+    "severity": "HIGH",
+    "suggested_action": "Map the account to an existing COA account or add it to the COA; until then it is shown as a reconciling line.",
+    "title": "Account not in COA (orphan)"
+  },
+  {
+    "assumption": "A7",
+    "evidence": {
+      "accounts": [
+        {
+          "account_code": "7310",
+          "net": "-42000.00",
+          "normal_balance": "Debit"
+        },
+        {
+          "account_code": "7400",
+          "net": "-18000.00",
+          "normal_balance": "Debit"
+        }
+      ]
+    },
+    "file": "trial_balance.csv",
+    "id": "H-TB-04",
+    "message": "These debit-normal accounts carry credit balances: 7310 FX Gain/Loss - Unrealized (credit balance 42,000.00), 7400 Gain/Loss on Disposal of Assets (credit balance 18,000.00). This can be legitimate (e.g. gains booked to Expense-typed accounts); amounts keep their debit-minus-credit sign.",
+    "policy_applied": "sign = debit - credit; normal balance used for warnings only",
+    "severity": "MEDIUM",
+    "suggested_action": "Review whether each credit balance is expected (gain, reversal) or a mis-posting.",
+    "title": "Credit balance on accounts whose COA normal balance is Debit"
+  },
+  {
+    "assumption": "A14",
+    "evidence": {
+      "accounts": [
+        {
+          "account_code": "2170",
+          "account_name": "Intercompany Payable",
+          "credit": "1240000.00",
+          "debit": "0.00"
+        }
+      ]
+    },
+    "file": "trial_balance.csv",
+    "id": "H-TB-06",
+    "message": "Intercompany balance in a single-entity trial balance: 2170 Intercompany Payable (debit 0.00, credit 1,240,000.00). It cannot be eliminated without the counterparty entity's books.",
+    "policy_applied": "intercompany balances not eliminated",
+    "severity": "MEDIUM",
+    "suggested_action": "Obtain the counterparty entity's trial balance and agree the balance before any consolidation.",
+    "title": "Intercompany balance without counterparty"
+  },
+  {
+    "assumption": null,
+    "evidence": {
+      "brief_says": "~80 accounts",
+      "rows": 62,
+      "unique_codes": 59
+    },
+    "file": "trial_balance.csv",
+    "id": "H-TB-05",
+    "message": "The brief says \"~80 accounts\" but the trial balance has 62 rows covering 59 unique account codes.",
+    "policy_applied": null,
+    "severity": "INFO",
+    "suggested_action": "Confirm this is the complete trial balance extract for the period.",
+    "title": "Row count differs from brief"
+  },
+  {
+    "assumption": null,
+    "evidence": {
+      "accounts": [
+        "1150",
+        "2170"
+      ],
+      "names": [
+        "Other Current Assets",
+        "Intercompany Payable"
+      ]
+    },
+    "file": "chart_of_accounts.csv",
+    "id": "H-COA-01",
+    "message": "2 account(s) have a cash-flow category of 'TBD': 1150 Other Current Assets, 2170 Intercompany Payable. Their movements cannot be placed in operating, investing or financing activities.",
+    "policy_applied": null,
+    "severity": "HIGH",
+    "suggested_action": "Ask the controller to assign a cash-flow category (Operating, Investing or Financing) to each account before the cash-flow statement is prepared.",
+    "title": "Ambiguous cash-flow category (TBD)"
+  },
+  {
+    "assumption": null,
+    "evidence": {
+      "accounts": [
+        "1290"
+      ]
+    },
+    "file": "chart_of_accounts.csv",
+    "id": "H-COA-02",
+    "message": "1 header account(s) have no accounts beneath them: 1290 Other Assets. They will always show a zero subtotal.",
+    "policy_applied": null,
+    "severity": "MEDIUM",
+    "suggested_action": "Confirm whether posting accounts are missing under these headers, or remove the unused headers from the chart of accounts.",
+    "title": "Header with no children"
+  },
+  {
+    "assumption": "A7",
+    "evidence": {
+      "accounts": [
+        "7000"
+      ]
+    },
+    "file": "chart_of_accounts.csv",
+    "id": "H-COA-03",
+    "message": "1 account(s) have no normal balance (Debit or Credit): 7000 Non-Operating Items. Unusual-sign warnings cannot be raised for them.",
+    "policy_applied": null,
+    "severity": "MEDIUM",
+    "suggested_action": "Set the normal balance for these accounts. Amounts are unaffected, because balances are always computed as debit minus credit.",
+    "title": "Missing normal_balance"
+  },
+  {
+    "assumption": "A8",
+    "evidence": {
+      "accounts": [
+        "3300",
+        "8000"
+      ],
+      "children": {
+        "3300": [
+          "3310"
+        ],
+        "8000": [
+          "8100",
+          "8200"
+        ]
+      }
+    },
+    "file": "chart_of_accounts.csv",
+    "id": "H-COA-05",
+    "message": "2 account(s) have sub-accounts but are not marked as headers: 3300 Accumulated OCI (children 3310); 8000 Income Tax Expense (children 8100, 8200). They are treated as subtotals, so direct postings to them are ambiguous.",
+    "policy_applied": "Accounts with children are treated as structural subtotals.",
+    "severity": "MEDIUM",
+    "suggested_action": "Mark these accounts as headers in the chart of accounts, or move their sub-accounts; do not post directly to them.",
+    "title": "Non-header accounts that have children"
+  },
+  {
+    "assumption": null,
+    "evidence": {
+      "accounts": [
+        "3200",
+        "3300",
+        "3310"
+      ]
+    },
+    "file": "chart_of_accounts.csv",
+    "id": "H-COA-04",
+    "message": "3 balance-sheet account(s) have no cash-flow category: 3200 Retained Earnings, 3300 Accumulated OCI, 3310 FX Translation Reserve. This is defensible for derived lines such as retained earnings and OCI.",
+    "policy_applied": null,
+    "severity": "LOW",
+    "suggested_action": "Confirm these are derived balances (from profit or translation) and not cash movements; otherwise assign a cash-flow category.",
+    "title": "BS posting accounts with no cf_category"
+  },
+  {
+    "assumption": "A7",
+    "evidence": {
+      "accounts": [
+        "1121",
+        "1211",
+        "1221",
+        "3400",
+        "4200"
+      ],
+      "details": [
+        {
+          "account_type": "Asset",
+          "code": "1121",
+          "normal_balance": "Credit"
+        },
+        {
+          "account_type": "Asset",
+          "code": "1211",
+          "normal_balance": "Credit"
+        },
+        {
+          "account_type": "Asset",
+          "code": "1221",
+          "normal_balance": "Credit"
+        },
+        {
+          "account_type": "Equity",
+          "code": "3400",
+          "normal_balance": "Debit"
+        },
+        {
+          "account_type": "Revenue",
+          "code": "4200",
+          "normal_balance": "Debit"
+        }
+      ]
+    },
+    "file": "chart_of_accounts.csv",
+    "id": "H-COA-06",
+    "message": "5 contra account(s) have a normal balance opposite to their account type: 1121 (Asset/Credit), 1211 (Asset/Credit), 1221 (Asset/Credit), 3400 (Equity/Debit), 4200 (Revenue/Debit). Balances are signed by debit and credit, so they are handled correctly.",
+    "policy_applied": "Sign is always debit minus credit; account type drives warnings only.",
+    "severity": "INFO",
+    "suggested_action": "No change needed; reviewers should expect these accounts to carry the opposite sign to their category.",
+    "title": "Contra accounts with reversed normal balance (correct, but must be handled)"
+  },
+  {
+    "assumption": "A15",
+    "evidence": {
+      "opening": {
+        "credit": "32345000.00",
+        "debit": "35325009.80",
+        "delta": "2980009.80"
+      },
+      "raw": {
+        "credit": "32345000.00",
+        "debit": "35177800.00",
+        "delta": "2832800.00"
+      },
+      "usd_only": {
+        "credit": "32345000.00",
+        "debit": "34082000.00",
+        "delta": "1737000.00"
+      }
+    },
+    "file": "prior_period_tb.csv",
+    "id": "H-PP-01",
+    "message": "The prior-period trial balance does not balance: debits 35,177,800.00 vs credits 32,345,000.00 (difference +2,832,800.00); USD rows only +1,737,000.00; translated at opening rates, debits 35,325,009.80 and difference +2,980,009.80. Opening balances taken from it are unreliable for the equity and cash-flow walks.",
+    "policy_applied": "prior TB used for comparatives only",
+    "severity": "HIGH",
+    "suggested_action": "Obtain a balanced, post-close prior-period TB before using it for opening balances; use it for comparatives only until then.",
+    "title": "Prior TB does not balance"
+  },
+  {
+    "assumption": "A16",
+    "evidence": {
+      "orphans": [
+        {
+          "account_code": "6905",
+          "account_name": "Sundry Operating Expenses",
+          "amount": "132000.00",
+          "candidates": [
+            {
+              "code": "6900",
+              "name": "Other Operating Expenses",
+              "score": "0.86"
+            },
+            {
+              "code": "1140",
+              "name": "Prepaid Expenses",
+              "score": "0.68"
+            },
+            {
+              "code": "2120",
+              "name": "Accrued Expenses",
+              "score": "0.67"
+            }
+          ]
+        }
+      ]
+    },
+    "file": "prior_period_tb.csv",
+    "id": "H-PP-02",
+    "message": "The prior-period TB uses 1 account(s) not in the current chart of accounts: 6905 Sundry Operating Expenses (132,000.00), closest current account 6900 Other Operating Expenses. The account was probably renamed.",
+    "policy_applied": null,
+    "severity": "HIGH",
+    "suggested_action": "Review the proposed mapping; it requires human approval before prior-period comparatives are restated to the current account.",
+    "title": "Account not in COA (renamed)"
+  },
+  {
+    "assumption": "A15",
+    "evidence": {
+      "accounts": [
+        "6905"
+      ]
+    },
+    "file": "prior_period_tb.csv",
+    "id": "H-PP-03",
+    "message": "The prior-period TB should contain balance-sheet accounts only, but holds P&L account(s) 6905. The prior year may not have been closed to retained earnings.",
+    "policy_applied": null,
+    "severity": "MEDIUM",
+    "suggested_action": "Confirm with the preparer whether the prior TB is post-close; if not, close the P&L balances to retained earnings before using it for opening balances.",
+    "title": "P&L account present in a balance-sheet-only prior TB"
+  },
+  {
+    "assumption": "A15",
+    "evidence": {
+      "distribution_accounts_found": [],
+      "movements": [
+        {
+          "account_code": "3200",
+          "current": "7240000.00",
+          "delta": "2060000.00",
+          "prior": "5180000.00"
+        },
+        {
+          "account_code": "3310",
+          "current": "180000.00",
+          "delta": "85000.00",
+          "prior": "95000.00"
+        }
+      ]
+    },
+    "file": "prior_period_tb.csv",
+    "id": "H-PP-04",
+    "message": "Reserves moved between periods: 3200 Retained Earnings 5,180,000.00 to 7,240,000.00 (change 2,060,000.00); 3310 FX Translation Reserve 95,000.00 to 180,000.00 (change 85,000.00). No dividend or distribution account appears in the COA or either TB. Whether opening equity can be walked depends on Clarifying Q2.",
+    "policy_applied": null,
+    "severity": "INFO",
+    "suggested_action": "Answer Clarifying Q2: confirm the prior TB is post-close and whether any dividends or distributions were declared in the period.",
+    "title": "Retained earnings movement with no dividend/distribution account visible"
+  },
+  {
+    "assumption": "A4",
+    "evidence": {
+      "fallback_rate_id": "GBP/period_average",
+      "missing": [
+        {
+          "affected_rows": [
+            {
+              "account_code": "1110",
+              "local_amount": "412300.00",
+              "row": 2
+            }
+          ],
+          "currency": "GBP",
+          "fallback_average": "521147.20",
+          "fallback_opening": "515787.30",
+          "rate_type": "period_end"
+        }
+      ],
+      "policy": "fallback_average"
+    },
+    "file": "fx_rates.csv",
+    "id": "H-FX-01",
+    "message": "There is no period-end rate for GBP, which affects 1110 (GBP 412,300.00; 521,147.20 at the period-average rate; 515,787.30 at the opening rate). The period-average rate is used instead; every affected line is flagged.",
+    "policy_applied": "fx.missing_rate_policy=fallback_average",
+    "severity": "CRITICAL",
+    "suggested_action": "Obtain the period-end rate from treasury and add it to the rate file; until then, confirm which fallback rate finance accepts.",
+    "title": "Missing period-end rate"
+  },
+  {
+    "assumption": null,
+    "evidence": {
+      "opening_rates": {
+        "EUR": "1.071",
+        "GBP": "1.251"
+      }
+    },
+    "file": "fx_rates.csv",
+    "id": "H-FX-02",
+    "message": "Opening rates are available (EUR 1.071, GBP 1.251). They support a translation-reserve walk but are only used here to translate the prior-period TB.",
+    "policy_applied": null,
+    "severity": "INFO",
+    "suggested_action": "No action needed; available for a translation-reserve walk.",
+    "title": "Opening rates present"
+  },
+  {
+    "assumption": null,
+    "evidence": {
+      "accounts": [
+        "6315"
+      ],
+      "entries": [
+        "JE-005"
+      ]
+    },
+    "file": "manual_adjustments.json",
+    "id": "H-ADJ-02",
+    "message": "The batch posts to accounts that are not in the chart of accounts: 6315 (used by JE-005). These lines cannot be posted as written.",
+    "policy_applied": null,
+    "severity": "MEDIUM",
+    "suggested_action": "Either add the account to the chart of accounts under the right parent, or correct the entry to an existing account and resubmit.",
+    "title": "Batch references account not in COA"
+  },
+  {
+    "assumption": null,
+    "evidence": {
+      "difference": "3500.00",
+      "entries": 10,
+      "lines": 20,
+      "total_credit": "1797700.00",
+      "total_debit": "1801200.00",
+      "unbalanced_entries": [
+        "JE-002"
+      ]
+    },
+    "file": "manual_adjustments.json",
+    "id": "H-ADJ-01",
+    "message": "10 entries with 20 lines: debits 1,801,200.00 vs credits 1,797,700.00 (difference 3,500.00). The difference comes from JE-002.",
+    "policy_applied": null,
+    "severity": "INFO",
+    "suggested_action": "Review the unbalanced entries listed; they will be rejected by the balance rule.",
+    "title": "Batch summary"
+  }
+]

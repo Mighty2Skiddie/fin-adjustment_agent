@@ -36,3 +36,12 @@ should be able to disagree with any line here and know exactly what changes.
 - D5 (pre-build): The translation difference line is part of the base ledger, so 3310 base = 180,000.00 + 182,460.20 = 362,460.20 Cr and the base and posted TB both net to 0.00.
 - D6 (pre-build): R007b computes the expected revaluation only for currencies that have a period-end rate; GBP is excluded with a note, so the expected values are EUR-only (10,730.20 / 19,809.60).
 - D7 (pre-build): Fuzzy candidate matching (H-PP-02, R002b) only considers postable, non-structural accounts; otherwise header `6000 Operating Expenses` outranks `6900`.
+- D8 (Phase 1): `HealthFinding` shares the evidence-backed shape of `Finding` (title, message, evidence, suggested_action) but uses its own severity scale (CRITICAL…INFO), so it is a sibling class rather than a subclass. Evidence is any JSON value except floats (Decimals as strings), enforced by a validator.
+- D9 (Phase 1): Materiality tolerance = the *stricter* of `imbalance_tolerance_abs` and `imbalance_tolerance_pct × total debits` (1.00 here).
+- D10 (Phase 1): Under `missing_rate_policy=block` the base ledger is not built (MissingRateError) and the run is marked `BLOCKED`; the health audit still reports every finding.
+- D11 (Phase 1): TB lineage row refs are 0-based data-row indices (`trial_balance.csv#2` = GBP cash), as `TbRow.row_index` specifies; JE line refs are 1-based (`JE-001#2` = second line), matching the architecture doc's auditor example.
+- D12 (Phase 1): H-TB-05 fires when unique codes differ from the brief's "~80 accounts" by more than 10%.
+- D13 (Phase 1): H-PP-04 identifies reserves from data, not code numbers: Equity, non-header, cash-flow category not `Financing` (→ 3200, 3310); compares USD rows only.
+- D14 (Phase 1): H-FX-01 computes both fallback translations whatever the policy, and omits `fallback_rate_id` under `block`.
+- D15 (Phase 1, pending confirmation): `chart_of_accounts.csv` holds **72** accounts (73 lines including the header); §1 of `02_DATA_SPEC.md` says "73 rows". Tests assert 72; the spec text is unchanged pending the user's confirmation.
+- D16 (Phase 1): Fuzzy scores are rapidfuzz `token_set_ratio` rounded to an integer and stored as a 2-dp Decimal string (`"0.86"`) — no floats in evidence.
