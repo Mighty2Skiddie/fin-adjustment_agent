@@ -1,5 +1,6 @@
-"""H-TB-02: the same account repeated in the same currency is summed (A5), but a repeat in one
-currency is the classic shape of a double-posting, so it is surfaced rather than merged quietly."""
+"""H-TB-02: the same account repeated in the same currency is summed (ASSUMPTIONS A5), but a
+repeat in one currency is the classic shape of a double-posting, so it is surfaced, not merged
+quietly."""
 
 from __future__ import annotations
 

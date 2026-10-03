@@ -1,0 +1,229 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "How One Journal Entry Is Checked and Decided",
+    "locale": "en",
+    "quality_profile": "showcase"
+  },
+  "lanes": [
+    {
+      "id": "rules",
+      "label": "Check, decide, post (fixed rules)"
+    },
+    {
+      "id": "llm",
+      "label": "LLM steps, checked by rules"
+    },
+    {
+      "id": "people",
+      "label": "People (reviewer, preparer)",
+      "variant": "exception"
+    }
+  ],
+  "mainPath": [
+    "entry",
+    "validate",
+    "intent",
+    "decide",
+    "explain",
+    "propose",
+    "revalidate",
+    "review",
+    "post"
+  ],
+  "nodes": [
+    {
+      "id": "entry",
+      "lane": "rules",
+      "col": 0,
+      "type": "frontend",
+      "label": "Journal entry",
+      "sublabel": "one version",
+      "width": 120
+    },
+    {
+      "id": "validate",
+      "lane": "rules",
+      "col": 1,
+      "type": "backend",
+      "label": "validate",
+      "sublabel": "rules R001-R012",
+      "width": 120
+    },
+    {
+      "id": "intent",
+      "lane": "llm",
+      "col": 1,
+      "type": "external",
+      "label": "intent_review",
+      "sublabel": "may only add R013",
+      "width": 130
+    },
+    {
+      "id": "decide",
+      "lane": "rules",
+      "col": 2,
+      "type": "security",
+      "label": "decide",
+      "sublabel": "worst severity wins",
+      "width": 130,
+      "tag": "decisions.decide"
+    },
+    {
+      "id": "explain",
+      "lane": "llm",
+      "col": 3,
+      "type": "external",
+      "label": "explain",
+      "sublabel": "guardrails, retry once",
+      "width": 140
+    },
+    {
+      "id": "propose",
+      "lane": "llm",
+      "col": 4,
+      "type": "external",
+      "label": "propose_fix",
+      "sublabel": "ideas, never applied",
+      "width": 140
+    },
+    {
+      "id": "revalidate",
+      "lane": "llm",
+      "col": 5,
+      "type": "backend",
+      "label": "revalidate",
+      "sublabel": "same rules test fixes",
+      "width": 140,
+      "tag": "revalidate_candidates"
+    },
+    {
+      "id": "review",
+      "lane": "people",
+      "col": 5,
+      "type": "security",
+      "label": "Review queue",
+      "sublabel": "approve or reject, final",
+      "width": 150
+    },
+    {
+      "id": "resubmit",
+      "lane": "people",
+      "col": 4,
+      "type": "frontend",
+      "label": "Resubmit",
+      "sublabel": "edit as new version",
+      "width": 130
+    },
+    {
+      "id": "post",
+      "lane": "rules",
+      "col": 5,
+      "type": "database",
+      "label": "Post to ledger",
+      "sublabel": "accepted + approved",
+      "width": 140
+    }
+  ],
+  "edges": [
+    {
+      "from": "entry",
+      "to": "validate",
+      "role": "main"
+    },
+    {
+      "from": "validate",
+      "to": "intent",
+      "label": "findings",
+      "role": "main"
+    },
+    {
+      "from": "intent",
+      "to": "decide",
+      "role": "main"
+    },
+    {
+      "from": "decide",
+      "to": "explain",
+      "label": "not ACCEPTED",
+      "role": "main"
+    },
+    {
+      "from": "explain",
+      "to": "propose",
+      "role": "main"
+    },
+    {
+      "from": "propose",
+      "to": "revalidate",
+      "role": "main"
+    },
+    {
+      "from": "revalidate",
+      "to": "propose",
+      "label": "none resolves, max 2",
+      "role": "return",
+      "variant": "dashed"
+    },
+    {
+      "from": "revalidate",
+      "to": "review",
+      "label": "QUARANTINED",
+      "role": "main"
+    },
+    {
+      "from": "revalidate",
+      "to": "resubmit",
+      "label": "REJECTED",
+      "role": "error",
+      "variant": "security"
+    },
+    {
+      "from": "review",
+      "to": "post",
+      "label": "approved",
+      "role": "main"
+    },
+    {
+      "from": "review",
+      "to": "resubmit",
+      "label": "rejected",
+      "role": "error",
+      "variant": "security"
+    },
+    {
+      "from": "decide",
+      "to": "post",
+      "label": "ACCEPTED",
+      "role": "branch",
+      "variant": "emphasis"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Rules decide, not the LLM",
+      "items": [
+        "decisions.decide: any BLOCK means REJECTED, any ESCALATE means QUARANTINED, otherwise ACCEPTED",
+        "intent_review can only add R013, never remove a rule finding"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "LLM output is checked",
+      "items": [
+        "intent_review, explain and propose_fix check every LLM answer",
+        "On failure: retry once, then use a fixed template"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "People make the final call",
+      "items": [
+        "A reviewer approves or rejects a QUARANTINED entry once; the choice is final",
+        "A REJECTED entry cannot be approved; the preparer resubmits a new version"
+      ]
+    }
+  ]
+}

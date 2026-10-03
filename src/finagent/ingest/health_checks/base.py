@@ -4,11 +4,11 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Any, Protocol
+from typing import Any
 
 from finagent.config import Settings
 from finagent.domain.coa_tree import CoaTree
-from finagent.domain.models import CoaAccount, FxRate, HealthFinding, JournalEntry, TbRow
+from finagent.domain.models import CoaAccount, FxRate, JournalEntry, TbRow
 from finagent.ingest.fx import RateBook
 
 
@@ -23,9 +23,3 @@ class AuditContext:
     ratebook: RateBook
     entries: list[JournalEntry]
     adjustments_raw: dict[str, Any] = field(default_factory=dict[str, Any])
-
-
-class HealthCheck(Protocol):
-    CHECK_ID: str
-
-    def check(self, ctx: AuditContext) -> list[HealthFinding]: ...

@@ -1,0 +1,182 @@
+{
+  "key": "4fd8b4e51c875e78047803feaf9b7230779f78702a636958cae78fe23c22799c",
+  "model": "gemini-2.5-flash",
+  "provider": "google_genai",
+  "recorded_at": "2026-10-01T14:18:31Z",
+  "request": {
+    "payload": {
+      "coa_excerpt": [
+        {
+          "code": "1110",
+          "name": "Cash and Cash Equivalents",
+          "type": "Asset"
+        },
+        {
+          "code": "1120",
+          "name": "Accounts Receivable",
+          "type": "Asset"
+        },
+        {
+          "code": "1121",
+          "name": "Allowance for Doubtful Accounts",
+          "type": "Asset"
+        },
+        {
+          "code": "1130",
+          "name": "Inventory - Raw Materials",
+          "type": "Asset"
+        },
+        {
+          "code": "1131",
+          "name": "Inventory - Finished Goods",
+          "type": "Asset"
+        },
+        {
+          "code": "1140",
+          "name": "Prepaid Expenses",
+          "type": "Asset"
+        },
+        {
+          "code": "1150",
+          "name": "Other Current Assets",
+          "type": "Asset"
+        },
+        {
+          "code": "6100",
+          "name": "Salaries and Wages",
+          "type": "Expense"
+        },
+        {
+          "code": "6110",
+          "name": "Employee Benefits",
+          "type": "Expense"
+        },
+        {
+          "code": "6120",
+          "name": "Payroll Taxes",
+          "type": "Expense"
+        },
+        {
+          "code": "6200",
+          "name": "Rent Expense",
+          "type": "Expense"
+        },
+        {
+          "code": "6210",
+          "name": "Utilities",
+          "type": "Expense"
+        },
+        {
+          "code": "6220",
+          "name": "Office Supplies",
+          "type": "Expense"
+        },
+        {
+          "code": "6300",
+          "name": "Marketing and Advertising",
+          "type": "Expense"
+        },
+        {
+          "code": "6310",
+          "name": "Travel and Entertainment",
+          "type": "Expense"
+        },
+        {
+          "code": "6400",
+          "name": "Professional Fees",
+          "type": "Expense"
+        },
+        {
+          "code": "6410",
+          "name": "Insurance",
+          "type": "Expense"
+        },
+        {
+          "code": "6500",
+          "name": "Depreciation Expense",
+          "type": "Expense"
+        },
+        {
+          "code": "6510",
+          "name": "Amortization Expense",
+          "type": "Expense"
+        },
+        {
+          "code": "6600",
+          "name": "Bad Debt Expense",
+          "type": "Expense"
+        },
+        {
+          "code": "6900",
+          "name": "Other Operating Expenses",
+          "type": "Expense"
+        }
+      ],
+      "entry": {
+        "date": "2024-12-31",
+        "description": "<untrusted_data>Bad debt provision top-up</untrusted_data>",
+        "id": "JE-004",
+        "lines": [
+          {
+            "account": "6600",
+            "account_name": "Bad Debt Expense",
+            "credit": "0.00",
+            "debit": "45000.00",
+            "line": 1,
+            "memo": "<untrusted_data>Top-up reserve</untrusted_data>"
+          },
+          {
+            "account": "1121",
+            "account_name": "Allowance for Doubtful Accounts",
+            "credit": "45000.00",
+            "debit": "0.00",
+            "line": 2,
+            "memo": "<untrusted_data>Increase allowance</untrusted_data>"
+          }
+        ],
+        "source": "<untrusted_data>AR aging review</untrusted_data>",
+        "total_credit": "45000.00",
+        "total_debit": "45000.00"
+      },
+      "findings": [
+        {
+          "evidence": {
+            "account": "6600",
+            "amount": "45000.00",
+            "base_balance": "95000.00",
+            "pct": "0.4737",
+            "threshold": "0.20"
+          },
+          "message": "This entry moves 45,000.00 on 6600 Bad Debt Expense, which is 47.4% of its current balance of 95,000.00.",
+          "rule_id": "R009",
+          "severity": "INFO",
+          "suggested_action": "Confirm the amount with the preparer and check the supporting schedule.",
+          "title": "Large relative to the account balance"
+        },
+        {
+          "evidence": {
+            "account": "1121",
+            "amount": "45000.00",
+            "base_balance": "185000.00",
+            "pct": "0.2432",
+            "threshold": "0.20"
+          },
+          "message": "This entry moves 45,000.00 on 1121 Allowance for Doubtful Accounts, which is 24.3% of its current balance of 185,000.00.",
+          "rule_id": "R009",
+          "severity": "INFO",
+          "suggested_action": "Confirm the amount with the preparer and check the supporting schedule.",
+          "title": "Large relative to the account balance"
+        }
+      ],
+      "role": "intent_reviewer"
+    },
+    "system_prompt_version": "f580c9da3afa"
+  },
+  "response": {
+    "confidence": 1.0,
+    "consistent": true,
+    "implied_accounts": [],
+    "reason": "The entry debits 6600 Bad Debt Expense and credits 1121 Allowance for Doubtful Accounts for 45000.00, which is consistent with a bad debt provision top-up."
+  },
+  "role": "intent_reviewer"
+}

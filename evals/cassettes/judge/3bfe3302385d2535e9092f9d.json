@@ -1,0 +1,86 @@
+{
+  "key": "3bfe3302385d2535e9092f9d88a9668df8c5f47dd649d27e23c859b95a150e49",
+  "model": "gemini-2.5-flash",
+  "provider": "google_genai",
+  "recorded_at": "2026-10-01T15:24:38Z",
+  "request": {
+    "payload": {
+      "decision": "REJECTED",
+      "entry": {
+        "date": "2024-12-30",
+        "description": "<untrusted_data>Intercompany settlement — UK sub</untrusted_data>",
+        "id": "JE-008",
+        "lines": [
+          {
+            "account": "2170",
+            "account_name": "Intercompany Payable",
+            "credit": "0.00",
+            "debit": "320000.00",
+            "line": 1,
+            "memo": "<untrusted_data>IC payable down</untrusted_data>"
+          },
+          {
+            "account": "2170",
+            "account_name": "Intercompany Payable",
+            "credit": "320000.00",
+            "debit": "0.00",
+            "line": 2,
+            "memo": "<untrusted_data>IC payable up</untrusted_data>"
+          }
+        ],
+        "source": "<untrusted_data>IC reconciliation</untrusted_data>",
+        "total_credit": "320000.00",
+        "total_debit": "320000.00"
+      },
+      "explanation": "The entry is rejected because it debits and credits the same account, 2170 Intercompany Payable, for 320000.00, resulting in no change to any account balance, and its description does not match this action.\n- The entry debits and credits the same account 2170 Intercompany Payable, so no balance changes.\n- The description \"Intercompany settlement\" implies a change in an intercompany balance, but the entry debits and credits account 2170 Intercompany Payable for 320000.00, resulting in no net change.\n- This entry posts to 2170 Intercompany Payable but does not say which group company is on the other side, so the balance cannot be matched or eliminated.\nNext step: Ask the preparer to edit and resubmit the entry, clarifying which accounts were meant to move and naming the intercompany counterparty.",
+      "findings": [
+        {
+          "evidence": {
+            "distinct_accounts": 1,
+            "per_account_net": {
+              "2170": "0.00"
+            }
+          },
+          "message": "The entry debits and credits the same account 2170 Intercompany Payable, so no balance changes.",
+          "rule_id": "R005",
+          "severity": "BLOCK",
+          "suggested_action": "Ask the preparer which accounts were meant to move, then resubmit the entry.",
+          "title": "Entry changes nothing"
+        },
+        {
+          "evidence": {
+            "confidence": "1.00",
+            "implied_accounts": [
+              "1110"
+            ],
+            "llm_reason": "The description \"Intercompany settlement\" implies a change in an intercompany balance, typically involving a cash account. However, the entry debits and credits account 2170 Intercompany Payable for 320000.00, resulting in no net change."
+          },
+          "message": "The description \"Intercompany settlement\" implies a change in an intercompany balance, typically involving a cash account. However, the entry debits and credits account 2170 Intercompany Payable for 320000.00, resulting in no net change.",
+          "rule_id": "R013",
+          "severity": "ESCALATE",
+          "suggested_action": "Ask the preparer to confirm what the entry is meant to do.",
+          "title": "Description does not match the lines"
+        },
+        {
+          "evidence": {
+            "ic_accounts": [
+              "2170"
+            ]
+          },
+          "message": "This entry posts to 2170 Intercompany Payable but does not say which group company is on the other side, so the balance cannot be matched or eliminated.",
+          "rule_id": "R011",
+          "severity": "WARN",
+          "suggested_action": "Ask the preparer to name the counterparty (for example 'entity:UK-SUB') and resubmit.",
+          "title": "Intercompany entry without counterparty"
+        }
+      ],
+      "role": "judge"
+    },
+    "system_prompt_version": "359105d4f397"
+  },
+  "response": {
+    "reason": "The explanation clearly states the rejection reason, details all findings, and provides actionable next steps for the preparer.",
+    "score": 5
+  },
+  "role": "judge"
+}

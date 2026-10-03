@@ -1,0 +1,90 @@
+{
+  "key": "04d4e69c611e0ee5e83bb314432b20f3e4d0621967e65dc75d9ae5992d4a63ae",
+  "model": "gemini-2.5-flash",
+  "provider": "google_genai",
+  "recorded_at": "2026-10-01T15:24:01Z",
+  "request": {
+    "payload": {
+      "coa_excerpt": [
+        {
+          "code": "1110",
+          "name": "Cash and Cash Equivalents",
+          "type": "Asset"
+        },
+        {
+          "code": "2110",
+          "name": "Accounts Payable",
+          "type": "Liability"
+        },
+        {
+          "code": "2120",
+          "name": "Accrued Expenses",
+          "type": "Liability"
+        },
+        {
+          "code": "2130",
+          "name": "Short-term Debt",
+          "type": "Liability"
+        },
+        {
+          "code": "2140",
+          "name": "Current Portion of Long-term Debt",
+          "type": "Liability"
+        },
+        {
+          "code": "2150",
+          "name": "Income Tax Payable",
+          "type": "Liability"
+        },
+        {
+          "code": "2160",
+          "name": "Deferred Revenue",
+          "type": "Liability"
+        },
+        {
+          "code": "2170",
+          "name": "Intercompany Payable",
+          "type": "Liability"
+        }
+      ],
+      "entry": {
+        "date": "2024-12-12",
+        "description": "<untrusted_data>Pay supplier invoice INV-4471</untrusted_data>",
+        "id": "SYN-16",
+        "lines": [
+          {
+            "account": "2110",
+            "account_name": "Accounts Payable",
+            "credit": "0.00",
+            "debit": "5000.00",
+            "line": 1,
+            "memo": "<untrusted_data>Supplier payment</untrusted_data>"
+          },
+          {
+            "account": "2120",
+            "account_name": "Accrued Expenses",
+            "credit": "5000.00",
+            "debit": "0.00",
+            "line": 2,
+            "memo": "<untrusted_data>Accrued</untrusted_data>"
+          }
+        ],
+        "source": "<untrusted_data>AP payment run</untrusted_data>",
+        "total_credit": "5000.00",
+        "total_debit": "5000.00"
+      },
+      "findings": [],
+      "role": "intent_reviewer"
+    },
+    "system_prompt_version": "f580c9da3afa"
+  },
+  "response": {
+    "confidence": 1.0,
+    "consistent": false,
+    "implied_accounts": [
+      "1110"
+    ],
+    "reason": "The description \"Pay supplier invoice\" implies a cash outflow, but the entry debits Accounts Payable (2110) and credits Accrued Expenses (2120) for 5000.00, without touching a cash or bank account."
+  },
+  "role": "intent_reviewer"
+}

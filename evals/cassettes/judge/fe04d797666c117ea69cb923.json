@@ -1,0 +1,74 @@
+{
+  "key": "fe04d797666c117ea69cb923efd7a37fb555d14eb9d989d4254b0160aec4b785",
+  "model": "gemini-2.5-flash",
+  "provider": "google_genai",
+  "recorded_at": "2026-10-01T15:25:00Z",
+  "request": {
+    "payload": {
+      "decision": "REJECTED",
+      "entry": {
+        "date": "2024-12-01",
+        "description": "<untrusted_data>Insurance prepayment</untrusted_data>",
+        "id": "SYN-10",
+        "lines": [
+          {
+            "account": "1140",
+            "account_name": "Prepaid Expenses",
+            "credit": "1500.00",
+            "debit": "3000.00",
+            "line": 1,
+            "memo": "<untrusted_data>Both sides</untrusted_data>"
+          },
+          {
+            "account": "6410",
+            "account_name": "Insurance",
+            "credit": "1500.00",
+            "debit": "0.00",
+            "line": 2,
+            "memo": "<untrusted_data>Insurance</untrusted_data>"
+          }
+        ],
+        "source": "<untrusted_data>AP</untrusted_data>",
+        "total_credit": "3000.00",
+        "total_debit": "3000.00"
+      },
+      "explanation": "The entry is rejected because line 1 has both a debit and a credit, which is not allowed, and the description implies a cash transaction that is not present in the accounts.\n- Line 1 for account 1140 Prepaid Expenses has both a debit of 3000.00 and a credit of 1500.00; each line must be one side only.\n- The description \"Insurance prepayment\" implies a payment involving a cash or bank account, but no such account is touched. Instead, the entry adjusts account 1140 Prepaid Expenses and account 6410 Insurance.\nNext step: The entry is rejected. Please edit and resubmit the entry, ensuring each line has only one side and the description matches the accounts used.",
+      "findings": [
+        {
+          "evidence": {
+            "offending_line_indexes": [
+              1
+            ],
+            "reason": "line has both a debit and a credit"
+          },
+          "message": "Line(s) 1 carry both a debit and a credit; each line must be one side only.",
+          "rule_id": "R006",
+          "severity": "BLOCK",
+          "suggested_action": "Split each such line into a separate debit line and credit line.",
+          "title": "Malformed entry lines"
+        },
+        {
+          "evidence": {
+            "confidence": "1.00",
+            "implied_accounts": [
+              "1110"
+            ],
+            "llm_reason": "The description \"Insurance prepayment\" implies a payment involving a cash or bank account, but no such account is touched. Instead, the entry adjusts Prepaid Expenses (1140) and Insurance (6410)."
+          },
+          "message": "The description \"Insurance prepayment\" implies a payment involving a cash or bank account, but no such account is touched. Instead, the entry adjusts Prepaid Expenses (1140) and Insurance (6410).",
+          "rule_id": "R013",
+          "severity": "ESCALATE",
+          "suggested_action": "Ask the preparer to confirm what the entry is meant to do.",
+          "title": "Description does not match the lines"
+        }
+      ],
+      "role": "judge"
+    },
+    "system_prompt_version": "359105d4f397"
+  },
+  "response": {
+    "reason": "The explanation clearly states the rejection reasons with specific details (line, accounts, amounts) and provides actionable steps for correction.",
+    "score": 5
+  },
+  "role": "judge"
+}

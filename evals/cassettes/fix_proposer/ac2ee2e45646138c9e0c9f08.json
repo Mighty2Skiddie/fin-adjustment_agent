@@ -1,0 +1,163 @@
+{
+  "key": "ac2ee2e45646138c9e0c9f08241e055c31c9693081302652cffa57740a7c9ff1",
+  "model": "gemini-2.5-flash",
+  "provider": "google_genai",
+  "recorded_at": "2026-10-01T14:19:23Z",
+  "request": {
+    "payload": {
+      "coa_excerpt": [
+        {
+          "code": "1110",
+          "name": "Cash and Cash Equivalents",
+          "type": "Asset"
+        },
+        {
+          "code": "2110",
+          "name": "Accounts Payable",
+          "type": "Liability"
+        },
+        {
+          "code": "2120",
+          "name": "Accrued Expenses",
+          "type": "Liability"
+        },
+        {
+          "code": "2130",
+          "name": "Short-term Debt",
+          "type": "Liability"
+        },
+        {
+          "code": "2140",
+          "name": "Current Portion of Long-term Debt",
+          "type": "Liability"
+        },
+        {
+          "code": "2150",
+          "name": "Income Tax Payable",
+          "type": "Liability"
+        },
+        {
+          "code": "2160",
+          "name": "Deferred Revenue",
+          "type": "Liability"
+        },
+        {
+          "code": "2170",
+          "name": "Intercompany Payable",
+          "type": "Liability"
+        }
+      ],
+      "entry": {
+        "date": "2024-12-30",
+        "description": "<untrusted_data>Intercompany settlement — UK sub</untrusted_data>",
+        "id": "JE-008",
+        "lines": [
+          {
+            "account": "2170",
+            "account_name": "Intercompany Payable",
+            "credit": "0.00",
+            "debit": "320000.00",
+            "line": 1,
+            "memo": "<untrusted_data>IC payable down</untrusted_data>"
+          },
+          {
+            "account": "2170",
+            "account_name": "Intercompany Payable",
+            "credit": "320000.00",
+            "debit": "0.00",
+            "line": 2,
+            "memo": "<untrusted_data>IC payable up</untrusted_data>"
+          }
+        ],
+        "source": "<untrusted_data>IC reconciliation</untrusted_data>",
+        "total_credit": "320000.00",
+        "total_debit": "320000.00"
+      },
+      "findings": [
+        {
+          "evidence": {
+            "distinct_accounts": 1,
+            "per_account_net": {
+              "2170": "0.00"
+            }
+          },
+          "message": "The entry debits and credits the same account 2170 Intercompany Payable, so no balance changes.",
+          "rule_id": "R005",
+          "severity": "BLOCK",
+          "suggested_action": "Ask the preparer which accounts were meant to move, then resubmit the entry.",
+          "title": "Entry changes nothing"
+        },
+        {
+          "evidence": {
+            "confidence": "1.00",
+            "implied_accounts": [
+              "1110"
+            ],
+            "llm_reason": "The description \"Intercompany settlement\" implies a change in an intercompany balance, typically involving a cash account. However, the entry debits and credits account 2170 Intercompany Payable for 320000.00, resulting in no net change."
+          },
+          "message": "The description \"Intercompany settlement\" implies a change in an intercompany balance, typically involving a cash account. However, the entry debits and credits account 2170 Intercompany Payable for 320000.00, resulting in no net change.",
+          "rule_id": "R013",
+          "severity": "ESCALATE",
+          "suggested_action": "Ask the preparer to confirm what the entry is meant to do.",
+          "title": "Description does not match the lines"
+        },
+        {
+          "evidence": {
+            "ic_accounts": [
+              "2170"
+            ]
+          },
+          "message": "This entry posts to 2170 Intercompany Payable but does not say which group company is on the other side, so the balance cannot be matched or eliminated.",
+          "rule_id": "R011",
+          "severity": "WARN",
+          "suggested_action": "Ask the preparer to name the counterparty (for example 'entity:UK-SUB') and resubmit.",
+          "title": "Intercompany entry without counterparty"
+        }
+      ],
+      "role": "fix_proposer"
+    },
+    "system_prompt_version": "89120394b5e2"
+  },
+  "response": {
+    "candidates": [
+      {
+        "label": "Reduce Intercompany Payable",
+        "lines": [
+          {
+            "account": "2170",
+            "credit": "0.00",
+            "debit": "320000.00",
+            "memo": "IC payable down"
+          },
+          {
+            "account": "1110",
+            "credit": "320000.00",
+            "debit": "0.00",
+            "memo": "Cash paid for IC settlement"
+          }
+        ],
+        "rationale": "This candidate assumes the intent was to reduce the intercompany payable by paying cash, aligning with the 'IC payable down' memo and the implied cash account (1110)."
+      },
+      {
+        "label": "Increase Intercompany Payable",
+        "lines": [
+          {
+            "account": "1110",
+            "credit": "0.00",
+            "debit": "320000.00",
+            "memo": "Cash received for IC settlement"
+          },
+          {
+            "account": "2170",
+            "credit": "320000.00",
+            "debit": "0.00",
+            "memo": "IC payable up"
+          }
+        ],
+        "rationale": "This candidate assumes the intent was to increase the intercompany payable, possibly due to cash received from the sub, aligning with the 'IC payable up' memo and the implied cash account (1110)."
+      }
+    ],
+    "needs_human_input": "The original entry debits and credits Intercompany Payable (2170) for the same amount, resulting in no net change, and contains conflicting memos ('IC payable down' and 'IC payable up'). Was the intention to record a payment that reduced the intercompany payable, or to record an increase in the intercompany payable, possibly due to cash received? Also, please specify the counterparty for this intercompany transaction."
+  },
+  "role": "fix_proposer"
+}

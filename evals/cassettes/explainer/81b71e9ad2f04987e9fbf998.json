@@ -1,0 +1,64 @@
+{
+  "key": "81b71e9ad2f04987e9fbf9984fff15e89f0f5c3c38566b1f915e2910e7aa93f5",
+  "model": "gemini-2.5-flash",
+  "provider": "google_genai",
+  "recorded_at": "2026-10-01T15:20:28Z",
+  "request": {
+    "payload": {
+      "decision": "REJECTED",
+      "entry": {
+        "date": "2024-12-31",
+        "description": "<untrusted_data>Accrue operating costs to the header</untrusted_data>",
+        "id": "SYN-03",
+        "lines": [
+          {
+            "account": "6000",
+            "account_name": "Operating Expenses",
+            "credit": "0.00",
+            "debit": "5000.00",
+            "line": 1,
+            "memo": "<untrusted_data>Opex</untrusted_data>"
+          },
+          {
+            "account": "2120",
+            "account_name": "Accrued Expenses",
+            "credit": "5000.00",
+            "debit": "0.00",
+            "line": 2,
+            "memo": "<untrusted_data>Accrued</untrusted_data>"
+          }
+        ],
+        "source": "<untrusted_data>AP</untrusted_data>",
+        "total_credit": "5000.00",
+        "total_debit": "5000.00"
+      },
+      "findings": [
+        {
+          "evidence": {
+            "header_accounts": [
+              "6000"
+            ],
+            "lines": [
+              1
+            ]
+          },
+          "message": "6000 Operating Expenses is a header account that only totals its sub-accounts (line 1); amounts cannot be posted to header accounts directly.",
+          "rule_id": "R003",
+          "severity": "BLOCK",
+          "suggested_action": "Repost the line to the appropriate sub-account and resubmit.",
+          "title": "Posting to a header account"
+        }
+      ],
+      "role": "explainer"
+    },
+    "system_prompt_version": "8e08270bff2b"
+  },
+  "response": {
+    "details": [
+      "Line 1 posts 5000.00 to account 6000 Operating Expenses, which is a header account that only totals its sub-accounts."
+    ],
+    "next_step": "Edit the entry to post the amount to the appropriate sub-account of 6000 Operating Expenses and resubmit.",
+    "summary": "The entry was rejected because line 1 posts 5000.00 to account 6000 Operating Expenses, which is a header account and cannot have amounts posted directly to it."
+  },
+  "role": "explainer"
+}

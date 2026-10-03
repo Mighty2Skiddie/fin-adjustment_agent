@@ -8,7 +8,7 @@ from finagent.ingest import loaders
 
 def test_coa() -> None:
     coa = loaders.load_coa()
-    # 72 accounts: the file has 73 lines including the header (spec §1 says "73 rows").
+    # 72 accounts: the file has 73 lines including the header.
     assert len(coa) == 72
     by = {a.code: a for a in coa}
     assert by["1000"].parent_code is None and by["1000"].account_type == AccountType.HEADER

@@ -1,0 +1,306 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "Data Flow and Line Lineage",
+    "locale": "en",
+    "quality_profile": "showcase",
+    "viewBox": [
+      1080,
+      520
+    ]
+  },
+  "stages": [
+    {
+      "label": "Input files (read-only)"
+    },
+    {
+      "label": "Load and translate"
+    },
+    {
+      "label": "Ledger and checks"
+    },
+    {
+      "label": "Decide and post"
+    },
+    {
+      "label": "Outputs"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "ledger_files",
+      "type": "database",
+      "label": "Ledger files",
+      "sublabel": "TB, CoA, prior TB",
+      "stage": 0,
+      "row": 0,
+      "tag": "CSV"
+    },
+    {
+      "id": "fx_file",
+      "type": "database",
+      "label": "FX rates",
+      "sublabel": "fx_rates.csv",
+      "stage": 0,
+      "row": 1,
+      "tag": "CSV"
+    },
+    {
+      "id": "adj_file",
+      "type": "database",
+      "label": "Adjustments",
+      "sublabel": "manual_adjustments.json",
+      "stage": 0,
+      "row": 2,
+      "tag": "JSON",
+      "width": 132
+    },
+    {
+      "id": "loaders",
+      "type": "backend",
+      "label": "Loaders",
+      "sublabel": "text to Decimal",
+      "stage": 1,
+      "row": 0,
+      "tag": "ingest"
+    },
+    {
+      "id": "fx",
+      "type": "backend",
+      "label": "FX translation",
+      "sublabel": "period-end to USD",
+      "stage": 1,
+      "row": 1,
+      "tag": "fallback flagged"
+    },
+    {
+      "id": "health",
+      "type": "security",
+      "label": "Health audit",
+      "sublabel": "H-* checks, all 5 files",
+      "stage": 2,
+      "row": 0,
+      "tag": "DEFECT_LOG.md"
+    },
+    {
+      "id": "base_ledger",
+      "type": "backend",
+      "label": "Base ledger",
+      "sublabel": "sum per account",
+      "stage": 2,
+      "row": 1,
+      "tag": "9999 kept, 3310 plug"
+    },
+    {
+      "id": "rules",
+      "type": "backend",
+      "label": "Rules + LLM review",
+      "sublabel": "R001-R012, R013, decide",
+      "stage": 2,
+      "row": 2,
+      "tag": "LLM can only escalate"
+    },
+    {
+      "id": "posting",
+      "type": "backend",
+      "label": "Posting",
+      "sublabel": "accepted + approved",
+      "stage": 3,
+      "row": 1,
+      "tag": "lineage per line"
+    },
+    {
+      "id": "human",
+      "type": "frontend",
+      "label": "Human review",
+      "sublabel": "approve or reject",
+      "stage": 3,
+      "row": 2,
+      "tag": "quarantined only"
+    },
+    {
+      "id": "run_store",
+      "type": "database",
+      "label": "Run folder",
+      "sublabel": "output/runs/<run_id>/",
+      "stage": 4,
+      "row": 1,
+      "tag": "RunStore"
+    },
+    {
+      "id": "ui",
+      "type": "frontend",
+      "label": "Lineage drawer",
+      "sublabel": "Ledger page",
+      "stage": 4,
+      "row": 2,
+      "tag": "drill-down"
+    }
+  ],
+  "flows": [
+    {
+      "id": "f_ledger",
+      "from": "ledger_files",
+      "to": "loaders",
+      "label": "TB rows",
+      "route": "straight"
+    },
+    {
+      "id": "f_rates",
+      "from": "fx_file",
+      "to": "fx",
+      "label": "rates",
+      "route": "straight"
+    },
+    {
+      "id": "f_translate",
+      "from": "loaders",
+      "to": "fx",
+      "label": "TB rows",
+      "variant": "emphasis",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "labelAt": [
+        315,
+        214
+      ]
+    },
+    {
+      "id": "f_audit",
+      "from": "loaders",
+      "to": "health",
+      "label": "all 5 files",
+      "route": "straight"
+    },
+    {
+      "id": "f_usd",
+      "from": "fx",
+      "to": "base_ledger",
+      "label": "USD",
+      "variant": "emphasis",
+      "route": "straight"
+    },
+    {
+      "id": "f_entries",
+      "from": "adj_file",
+      "to": "rules",
+      "label": "journal entries",
+      "route": "straight"
+    },
+    {
+      "id": "f_context",
+      "from": "base_ledger",
+      "to": "rules",
+      "label": "context",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "labelAt": [
+        530,
+        328
+      ]
+    },
+    {
+      "id": "f_base",
+      "from": "base_ledger",
+      "to": "posting",
+      "label": "base lines",
+      "variant": "emphasis",
+      "route": "straight"
+    },
+    {
+      "id": "f_quarantine",
+      "from": "rules",
+      "to": "human",
+      "label": "QUARANTINED",
+      "variant": "dashed",
+      "route": "bottom-channel",
+      "fromSide": "bottom",
+      "toSide": "bottom"
+    },
+    {
+      "id": "f_approved",
+      "from": "human",
+      "to": "posting",
+      "label": "APPROVED",
+      "variant": "dashed",
+      "fromSide": "top",
+      "toSide": "bottom"
+    },
+    {
+      "id": "f_accepted",
+      "from": "rules",
+      "to": "posting",
+      "label": "ACCEPTED",
+      "fromSide": "right",
+      "toSide": "left"
+    },
+    {
+      "id": "f_posted",
+      "from": "posting",
+      "to": "run_store",
+      "label": "posted TB",
+      "variant": "emphasis",
+      "route": "straight"
+    },
+    {
+      "id": "f_health",
+      "from": "health",
+      "to": "run_store",
+      "label": "health.json",
+      "fromSide": "right",
+      "toSide": "top",
+      "via": [
+        [
+          960,
+          157
+        ]
+      ]
+    },
+    {
+      "id": "f_lineage",
+      "from": "run_store",
+      "to": "ui",
+      "label": "/lineage API",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "labelAt": [
+        960,
+        328
+      ]
+    }
+  ],
+  "cards": [
+    {
+      "dot": "emerald",
+      "title": "Where each posted line comes from",
+      "items": [
+        "TB row: the source CSV row and its amount",
+        "FX rate: the rate used, marked when it is a fallback (missing GBP period-end uses period average)",
+        "Journal entry line: the accepted or approved adjustment",
+        "Human decision: who approved it and why",
+        "Translation difference: the plug to 3310 that balances the translated TB"
+      ]
+    },
+    {
+      "dot": "cyan",
+      "title": "Files written per run",
+      "items": [
+        "posted_tb.csv and posted_tb.json, only when every invariant passes",
+        "decisions.json, base_ledger.json, health.json, manifest.json",
+        "audit_log.jsonl and human_decisions.json (append-only)",
+        "Run traces in output/traces; eval report in output/evals/report.md"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Rules the data follows",
+      "items": [
+        "Files in inputs/ are never changed; defects are reported, not fixed",
+        "Money is Decimal from text, never float",
+        "REJECTED entries never post; human approval applies to QUARANTINED only",
+        "Unmapped 9999 Suspense stays visible and is kept out of chart-of-accounts subtotals"
+      ]
+    }
+  ]
+}

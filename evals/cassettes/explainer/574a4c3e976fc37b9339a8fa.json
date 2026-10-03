@@ -1,0 +1,61 @@
+{
+  "key": "574a4c3e976fc37b9339a8fa8b4ac6d3d5ba42553bb18e7a1819203b0af20c71",
+  "model": "gemini-2.5-flash",
+  "provider": "google_genai",
+  "recorded_at": "2026-10-01T14:17:58Z",
+  "request": {
+    "payload": {
+      "decision": "REJECTED",
+      "entry": {
+        "date": "2024-12-28",
+        "description": "<untrusted_data>Reclassify marketing spend wrongly booked to T&E</untrusted_data>",
+        "id": "JE-002",
+        "lines": [
+          {
+            "account": "6300",
+            "account_name": "Marketing and Advertising",
+            "credit": "0.00",
+            "debit": "28500.00",
+            "line": 1,
+            "memo": "<untrusted_data>Move from T&E</untrusted_data>"
+          },
+          {
+            "account": "6310",
+            "account_name": "Travel and Entertainment",
+            "credit": "25000.00",
+            "debit": "0.00",
+            "line": 2,
+            "memo": "<untrusted_data>Reverse from T&E</untrusted_data>"
+          }
+        ],
+        "source": "<untrusted_data>Controller note 2024-12-28</untrusted_data>",
+        "total_credit": "25000.00",
+        "total_debit": "28500.00"
+      },
+      "findings": [
+        {
+          "evidence": {
+            "difference": "3500.00",
+            "total_credit": "25000.00",
+            "total_debit": "28500.00"
+          },
+          "message": "Debits total 28,500.00 but credits total 25,000.00, a difference of 3,500.00. We cannot tell which side is correct.",
+          "rule_id": "R001",
+          "severity": "BLOCK",
+          "suggested_action": "Ask the preparer which amount is right, then resubmit the entry.",
+          "title": "Entry does not balance"
+        }
+      ],
+      "role": "explainer"
+    },
+    "system_prompt_version": "8e08270bff2b"
+  },
+  "response": {
+    "details": [
+      "The entry does not balance because the total debits of 28,500.00 do not match the total credits of 25,000.00, resulting in a difference of 3,500.00."
+    ],
+    "next_step": "Please correct the entry to ensure debits and credits balance, then resubmit it.",
+    "summary": "The entry is rejected because the total debits do not equal the total credits, making it unbalanced."
+  },
+  "role": "explainer"
+}

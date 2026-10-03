@@ -1,5 +1,6 @@
 """H-TB-04: a credit balance on a debit-normal account is not necessarily wrong (gain/loss
-accounts typed Expense), but it proves sign must come from debit - credit, never type (A7)."""
+accounts typed Expense), but it proves sign must come from debit - credit, never from type
+(ASSUMPTIONS A7)."""
 
 from __future__ import annotations
 

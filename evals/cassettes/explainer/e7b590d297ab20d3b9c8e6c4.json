@@ -1,0 +1,63 @@
+{
+  "key": "e7b590d297ab20d3b9c8e6c4d31d79bb3af9271f7897f1f86029cc5f0561ec52",
+  "model": "gemini-2.5-flash",
+  "provider": "google_genai",
+  "recorded_at": "2026-10-01T15:24:05Z",
+  "request": {
+    "payload": {
+      "decision": "QUARANTINED",
+      "entry": {
+        "date": "2024-12-12",
+        "description": "<untrusted_data>Pay supplier invoice INV-4471</untrusted_data>",
+        "id": "SYN-16",
+        "lines": [
+          {
+            "account": "2110",
+            "account_name": "Accounts Payable",
+            "credit": "0.00",
+            "debit": "5000.00",
+            "line": 1,
+            "memo": "<untrusted_data>Supplier payment</untrusted_data>"
+          },
+          {
+            "account": "2120",
+            "account_name": "Accrued Expenses",
+            "credit": "5000.00",
+            "debit": "0.00",
+            "line": 2,
+            "memo": "<untrusted_data>Accrued</untrusted_data>"
+          }
+        ],
+        "source": "<untrusted_data>AP payment run</untrusted_data>",
+        "total_credit": "5000.00",
+        "total_debit": "5000.00"
+      },
+      "findings": [
+        {
+          "evidence": {
+            "confidence": "1.00",
+            "implied_accounts": [
+              "1110"
+            ],
+            "llm_reason": "The description \"Pay supplier invoice\" implies a cash outflow, but the entry debits Accounts Payable (2110) and credits Accrued Expenses (2120) for 5000.00, without touching a cash or bank account."
+          },
+          "message": "The description \"Pay supplier invoice\" implies a cash outflow, but the entry debits Accounts Payable (2110) and credits Accrued Expenses (2120) for 5000.00, without touching a cash or bank account.",
+          "rule_id": "R013",
+          "severity": "ESCALATE",
+          "suggested_action": "Ask the preparer to confirm what the entry is meant to do.",
+          "title": "Description does not match the lines"
+        }
+      ],
+      "role": "explainer"
+    },
+    "system_prompt_version": "8e08270bff2b"
+  },
+  "response": {
+    "details": [
+      "The description \"Pay supplier invoice\" suggests a cash outflow, but the entry debits Accounts Payable (2110) and credits Accrued Expenses (2120) for 5000.00, without involving a cash or bank account."
+    ],
+    "next_step": "Ask the preparer to confirm what the entry is meant to do.",
+    "summary": "Entry SYN-16 is quarantined because its description implies a cash payment, but the accounts used do not reflect a cash outflow."
+  },
+  "role": "explainer"
+}

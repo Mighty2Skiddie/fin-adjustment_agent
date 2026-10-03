@@ -12,7 +12,7 @@ accept / reject / quarantine per entry.
 
 ---
 
-## 1. `chart_of_accounts.csv` (73 rows)
+## 1. `chart_of_accounts.csv` (72 accounts; 73 lines including the header)
 
 | column | type | notes |
 |---|---|---|
@@ -121,18 +121,18 @@ absolute balance, WARN at ≥ 50%, never blocks (config `thresholds.magnitude_in
 
 | JE | Decision | Findings (rule → severity) | Why, in finance-user language (the Explainer must say this, not more) |
 |---|---|---|---|
-| JE-001 Accrue Q4 bonus pool | **ACCEPTED** | none (R009 magnitude 850,000 / 5,400,000 = 15.7%, below the 20% INFO threshold) | Balanced, both accounts exist, within period. |
+| JE-001 Accrue Q4 bonus pool | **ACCEPTED** | R009 WARN (per account, D4: 2120 850,000 / 1,150,000 = 73.9% ≥ 50%; 6100 850,000 / 5,400,000 = 15.7% below threshold) | Balanced, both accounts exist, within period. |
 | JE-002 Reclassify marketing spend | **REJECTED** | R001 BLOCK (debits 28,500.00 ≠ credits 25,000.00, Δ 3,500.00) | Entry is out of balance by 3,500.00. We cannot tell which side is right. Fix candidates: (a) credit 6310 28,500.00, (b) debit 6300 25,000.00 — the preparer must confirm. |
-| JE-003 FX reval of EUR cash | **QUARANTINED** | R007 ESCALATE (system already translates `1110 EUR` at period-end 1.095 → manual reval would double-count); R007b WARN (booked 11,200.00 ≠ 10,730.20 expected = 825,400 × (1.095 − 1.082); ≠ 19,809.60 on opening basis) | If the system revalues EUR cash itself, this entry counts the same gain twice. Also the amount does not match either rate basis. Needs finance to confirm who owns FX revaluation (Clarifying Q1). |
-| JE-004 Bad debt top-up | **ACCEPTED** | R009 INFO (45,000 / 185,000 = 24.3% of existing allowance) | Balanced, valid, contra-asset direction consistent; magnitude noted for awareness. |
+| JE-003 FX reval of EUR cash | **QUARANTINED** | R007 ESCALATE (system already translates `1110 EUR` at period-end 1.095 → manual reval would double-count); R007b WARN (booked 11,200.00 ≠ 10,730.20 expected = 825,400 × (1.095 − 1.082); ≠ 19,809.60 on opening basis); R009 INFO (7310 11,200 / 42,000 = 26.7%) | If the system revalues EUR cash itself, this entry counts the same gain twice. Also the amount does not match either rate basis. Needs finance to confirm who owns FX revaluation (Clarifying Q1). |
+| JE-004 Bad debt top-up | **ACCEPTED** | R009 INFO ×2 (6600 45,000 / 95,000 = 47.4%; 1121 45,000 / 185,000 = 24.3% of existing allowance) | Balanced, valid, contra-asset direction consistent; magnitude noted for awareness. |
 | JE-005 Reclass conference travel | **QUARANTINED** | R002 ESCALATE (`6315` not in COA); R002b INFO (fuzzy candidates — tests assert only that `6310 Travel and Entertainment` is the top candidate and carries `would_create_noop=true`; exact scores are not asserted); R005-derived note: mapping 6315→6310 would make both lines hit 6310 and the entry a no-op (circular) | The destination account doesn't exist. The closest existing account is the one the money is being moved *out of*, so remapping would cancel the entry. Either add `6315` to the COA (under 6000) or reject. |
 | JE-006 Depreciation catch-up | **ACCEPTED** | R009 INFO (215,000 / 850,000 existing depreciation = 25.3%) | Balanced and valid; sizeable relative to the period's existing depreciation, shown for awareness. |
-| JE-007 Deferred tax true-up | **ACCEPTED** | none | Balanced, valid. |
+| JE-007 Deferred tax true-up | **ACCEPTED** | R009 INFO (8200 38,000 / 120,000 = 31.7%) | Balanced, valid. |
 | JE-008 Intercompany settlement | **REJECTED** | R005 BLOCK (same account `2170` on both sides; entry nets to 0.00 on every account); R011 WARN (intercompany account with no counterparty reference) | Entry debits and credits the same account, so it changes nothing. The description says "settlement", which should reduce the payable against cash. Fix candidate: Dr 2170 320,000.00 / Cr 1110 320,000.00 — requires preparer confirmation of the paying bank account. |
 | JE-009 Legal fee accrual | **ACCEPTED** | none | Balanced, valid. |
-| JE-010 Reclass current portion of LTD | **ACCEPTED** | none | Balanced, valid; classification move within liabilities. |
+| JE-010 Reclass current portion of LTD | **ACCEPTED** | R009 INFO (2140 200,000 / 800,000 = 25.0%) | Balanced, valid; classification move within liabilities. |
 
-Expected counts: **6 ACCEPTED, 2 REJECTED, 2 QUARANTINED**. `evals/golden/expected_decisions.json`
+Expected counts: **6 ACCEPTED, 2 REJECTED, 2 QUARANTINED**. *(R009 rows corrected during build — decision D4 in `08_ASSUMPTIONS.md`: R009 is evaluated per account on the entry's net movement; decisions are unchanged.)* `evals/golden/expected_decisions.json`
 encodes this table as `{ "JE-001": {"decision": "ACCEPTED", "rule_ids": []}, ... }`.
 
 Intent Reviewer (LLM) expected behaviour, recorded in cassettes:

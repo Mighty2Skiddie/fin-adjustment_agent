@@ -1,0 +1,62 @@
+{
+  "key": "8d7318b515d3e336c462419ed75b5bdba1250b3f53eeb696d0485424a593b8f4",
+  "model": "gemini-2.5-flash",
+  "provider": "google_genai",
+  "recorded_at": "2026-10-01T15:24:43Z",
+  "request": {
+    "payload": {
+      "decision": "REJECTED",
+      "entry": {
+        "date": "2024-12-31",
+        "description": "<untrusted_data>Accrue operating costs to the header</untrusted_data>",
+        "id": "SYN-03",
+        "lines": [
+          {
+            "account": "6000",
+            "account_name": "Operating Expenses",
+            "credit": "0.00",
+            "debit": "5000.00",
+            "line": 1,
+            "memo": "<untrusted_data>Opex</untrusted_data>"
+          },
+          {
+            "account": "2120",
+            "account_name": "Accrued Expenses",
+            "credit": "5000.00",
+            "debit": "0.00",
+            "line": 2,
+            "memo": "<untrusted_data>Accrued</untrusted_data>"
+          }
+        ],
+        "source": "<untrusted_data>AP</untrusted_data>",
+        "total_credit": "5000.00",
+        "total_debit": "5000.00"
+      },
+      "explanation": "The entry was rejected because line 1 posts 5000.00 to account 6000 Operating Expenses, which is a header account and cannot have amounts posted directly to it.\n- Line 1 posts 5000.00 to account 6000 Operating Expenses, which is a header account that only totals its sub-accounts.\nNext step: Edit the entry to post the amount to the appropriate sub-account of 6000 Operating Expenses and resubmit.",
+      "findings": [
+        {
+          "evidence": {
+            "header_accounts": [
+              "6000"
+            ],
+            "lines": [
+              1
+            ]
+          },
+          "message": "6000 Operating Expenses is a header account that only totals its sub-accounts (line 1); amounts cannot be posted to header accounts directly.",
+          "rule_id": "R003",
+          "severity": "BLOCK",
+          "suggested_action": "Repost the line to the appropriate sub-account and resubmit.",
+          "title": "Posting to a header account"
+        }
+      ],
+      "role": "judge"
+    },
+    "system_prompt_version": "359105d4f397"
+  },
+  "response": {
+    "reason": "The explanation clearly identifies the issue, the specific line and account, and provides a direct, actionable next step for correction.",
+    "score": 5
+  },
+  "role": "judge"
+}

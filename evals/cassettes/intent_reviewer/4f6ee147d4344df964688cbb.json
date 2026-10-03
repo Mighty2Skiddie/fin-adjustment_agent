@@ -1,0 +1,149 @@
+{
+  "key": "4f6ee147d4344df964688cbb82dc0533d2f6ce465fa19e6e2f18a6065cbe2048",
+  "model": "gemini-2.5-flash",
+  "provider": "google_genai",
+  "recorded_at": "2026-10-01T15:21:42Z",
+  "request": {
+    "payload": {
+      "coa_excerpt": [
+        {
+          "code": "1110",
+          "name": "Cash and Cash Equivalents",
+          "type": "Asset"
+        },
+        {
+          "code": "2110",
+          "name": "Accounts Payable",
+          "type": "Liability"
+        },
+        {
+          "code": "2120",
+          "name": "Accrued Expenses",
+          "type": "Liability"
+        },
+        {
+          "code": "2130",
+          "name": "Short-term Debt",
+          "type": "Liability"
+        },
+        {
+          "code": "2140",
+          "name": "Current Portion of Long-term Debt",
+          "type": "Liability"
+        },
+        {
+          "code": "2150",
+          "name": "Income Tax Payable",
+          "type": "Liability"
+        },
+        {
+          "code": "2160",
+          "name": "Deferred Revenue",
+          "type": "Liability"
+        },
+        {
+          "code": "2170",
+          "name": "Intercompany Payable",
+          "type": "Liability"
+        }
+      ],
+      "entry": {
+        "date": "2024-12-18",
+        "description": "<untrusted_data>Clear supplier invoice to suspense</untrusted_data>",
+        "id": "SYN-06",
+        "lines": [
+          {
+            "account": "9999",
+            "account_name": "(not in chart of accounts)",
+            "credit": "0.00",
+            "debit": "500.00",
+            "line": 1,
+            "memo": "<untrusted_data>Unknown invoice</untrusted_data>"
+          },
+          {
+            "account": "2110",
+            "account_name": "Accounts Payable",
+            "credit": "500.00",
+            "debit": "0.00",
+            "line": 2,
+            "memo": "<untrusted_data>AP</untrusted_data>"
+          }
+        ],
+        "source": "<untrusted_data>AP</untrusted_data>",
+        "total_credit": "500.00",
+        "total_debit": "500.00"
+      },
+      "findings": [
+        {
+          "evidence": {
+            "lines": [
+              1
+            ],
+            "missing_accounts": [
+              "9999"
+            ]
+          },
+          "message": "Account 9999 is not in the chart of accounts (line 1), so the entry cannot be reported until the account is set up or the line is corrected.",
+          "rule_id": "R002",
+          "severity": "ESCALATE",
+          "suggested_action": "Add 9999 to the chart of accounts under its parent range, or correct the account on the line. Accounts are never mapped automatically.",
+          "title": "Account not in chart of accounts"
+        },
+        {
+          "evidence": {
+            "accounts": [
+              "9999"
+            ],
+            "lines": [
+              1
+            ]
+          },
+          "message": "The entry posts to 9999 Suspense - Unmapped (line 1), which is not mapped to any financial statement line.",
+          "rule_id": "R012",
+          "severity": "ESCALATE",
+          "suggested_action": "Post to the correct mapped account instead, or have the controller approve the use of the unmapped account with a written explanation.",
+          "title": "Posts to an unmapped account"
+        },
+        {
+          "evidence": {
+            "candidates": [
+              {
+                "code": "6220",
+                "name": "Office Supplies",
+                "score": "0.46",
+                "would_create_noop": false
+              },
+              {
+                "code": "8200",
+                "name": "Deferred Tax Expense",
+                "score": "0.39",
+                "would_create_noop": false
+              },
+              {
+                "code": "8100",
+                "name": "Current Tax Expense",
+                "score": "0.39",
+                "would_create_noop": false
+              }
+            ],
+            "missing_account": "9999"
+          },
+          "message": "Closest existing accounts to 9999: 6220 Office Supplies, 8200 Deferred Tax Expense, 8100 Current Tax Expense. These are suggestions only and have not been applied.",
+          "rule_id": "R002b",
+          "severity": "INFO",
+          "suggested_action": "Decide whether 9999 should be added to the chart of accounts or the line corrected to one of these accounts.",
+          "title": "Closest existing accounts"
+        }
+      ],
+      "role": "intent_reviewer"
+    },
+    "system_prompt_version": "f580c9da3afa"
+  },
+  "response": {
+    "confidence": 1.0,
+    "consistent": true,
+    "implied_accounts": [],
+    "reason": "The entry debits 9999 (suspense) and credits 2110 (Accounts Payable) for 500.00, which aligns with clearing a supplier invoice to suspense."
+  },
+  "role": "intent_reviewer"
+}

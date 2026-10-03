@@ -1,0 +1,140 @@
+{
+  "key": "cd1ad699c02d57d1104c384bb08cc4b0daf088f7b5952315ece346b1427570f3",
+  "model": "gemini-2.5-flash",
+  "provider": "google_genai",
+  "recorded_at": "2026-10-01T15:23:57Z",
+  "request": {
+    "payload": {
+      "coa_excerpt": [
+        {
+          "code": "1110",
+          "name": "Cash and Cash Equivalents",
+          "type": "Asset"
+        },
+        {
+          "code": "1210",
+          "name": "Property, Plant & Equipment - Cost",
+          "type": "Asset"
+        },
+        {
+          "code": "1211",
+          "name": "Accumulated Depreciation - PPE",
+          "type": "Asset"
+        },
+        {
+          "code": "1220",
+          "name": "Intangible Assets - Cost",
+          "type": "Asset"
+        },
+        {
+          "code": "1221",
+          "name": "Accumulated Amortization",
+          "type": "Asset"
+        },
+        {
+          "code": "1230",
+          "name": "Goodwill",
+          "type": "Asset"
+        },
+        {
+          "code": "1240",
+          "name": "Long-term Investments",
+          "type": "Asset"
+        },
+        {
+          "code": "1250",
+          "name": "Deferred Tax Asset",
+          "type": "Asset"
+        },
+        {
+          "code": "8100",
+          "name": "Current Tax Expense",
+          "type": "Expense"
+        },
+        {
+          "code": "8200",
+          "name": "Deferred Tax Expense",
+          "type": "Expense"
+        }
+      ],
+      "entry": {
+        "date": "2024-12-31",
+        "description": "<untrusted_data>Write down deferred tax asset</untrusted_data>",
+        "id": "SYN-15",
+        "lines": [
+          {
+            "account": "8200",
+            "account_name": "Deferred Tax Expense",
+            "credit": "0.00",
+            "debit": "400000.00",
+            "line": 1,
+            "memo": "<untrusted_data>DTA write-down</untrusted_data>"
+          },
+          {
+            "account": "1250",
+            "account_name": "Deferred Tax Asset",
+            "credit": "400000.00",
+            "debit": "0.00",
+            "line": 2,
+            "memo": "<untrusted_data>Reduce DTA</untrusted_data>"
+          }
+        ],
+        "source": "<untrusted_data>Tax provision memo</untrusted_data>",
+        "total_credit": "400000.00",
+        "total_debit": "400000.00"
+      },
+      "findings": [
+        {
+          "evidence": {
+            "account": "1250",
+            "after": "-80000.00",
+            "before": "320000.00",
+            "normal_balance": "Debit"
+          },
+          "message": "1250 Deferred Tax Asset normally carries a debit balance; this entry moves it from 320,000.00 to -80,000.00 (positive = debit, negative = credit).",
+          "rule_id": "R008",
+          "severity": "WARN",
+          "suggested_action": "Check the entry is posted to the right account and side; if the reversal is intended, note why before approving.",
+          "title": "Balance would flip against its normal side"
+        },
+        {
+          "evidence": {
+            "account": "8200",
+            "amount": "400000.00",
+            "base_balance": "120000.00",
+            "pct": "3.3333",
+            "threshold": "0.50"
+          },
+          "message": "This entry moves 400,000.00 on 8200 Deferred Tax Expense, which is 333.3% of its current balance of 120,000.00.",
+          "rule_id": "R009",
+          "severity": "WARN",
+          "suggested_action": "Confirm the amount with the preparer and check the supporting schedule.",
+          "title": "Large relative to the account balance"
+        },
+        {
+          "evidence": {
+            "account": "1250",
+            "amount": "400000.00",
+            "base_balance": "320000.00",
+            "pct": "1.2500",
+            "threshold": "0.50"
+          },
+          "message": "This entry moves 400,000.00 on 1250 Deferred Tax Asset, which is 125.0% of its current balance of 320,000.00.",
+          "rule_id": "R009",
+          "severity": "WARN",
+          "suggested_action": "Confirm the amount with the preparer and check the supporting schedule.",
+          "title": "Large relative to the account balance"
+        }
+      ],
+      "role": "intent_reviewer"
+    },
+    "system_prompt_version": "f580c9da3afa"
+  },
+  "response": {
+    "confidence": 1.0,
+    "consistent": true,
+    "implied_accounts": [],
+    "reason": "The entry credits account 1250 Deferred Tax Asset for 400000.00, which correctly reflects a write-down of the asset, with a corresponding debit to 8200 Deferred Tax Expense."
+  },
+  "role": "intent_reviewer"
+}

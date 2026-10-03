@@ -1,0 +1,365 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Finance Adjustments Agent - System Map",
+    "locale": "en",
+    "quality_profile": "showcase"
+  },
+  "components": [
+    {
+      "id": "reviewer",
+      "type": "external",
+      "label": "Finance Reviewer",
+      "sublabel": "approves held entries",
+      "pos": [
+        40,
+        100
+      ],
+      "size": [
+        150,
+        64
+      ]
+    },
+    {
+      "id": "ui",
+      "type": "frontend",
+      "label": "Review UI",
+      "sublabel": "React + Vite",
+      "pos": [
+        40,
+        320
+      ],
+      "size": [
+        150,
+        64
+      ]
+    },
+    {
+      "id": "api",
+      "type": "backend",
+      "label": "FastAPI /api",
+      "sublabel": "runs, entries, decisions",
+      "pos": [
+        290,
+        320
+      ],
+      "size": [
+        150,
+        64
+      ]
+    },
+    {
+      "id": "pipeline",
+      "type": "backend",
+      "label": "run_pipeline",
+      "sublabel": "pipeline.py",
+      "pos": [
+        540,
+        320
+      ],
+      "size": [
+        150,
+        64
+      ]
+    },
+    {
+      "id": "ingest",
+      "type": "backend",
+      "label": "Ingest + Health",
+      "sublabel": "loaders, FX RateBook",
+      "pos": [
+        540,
+        100
+      ],
+      "size": [
+        150,
+        64
+      ],
+      "tag": "base ledger"
+    },
+    {
+      "id": "graph",
+      "type": "backend",
+      "label": "Per-Entry Graph",
+      "sublabel": "LangGraph, fix loop x2",
+      "pos": [
+        790,
+        320
+      ],
+      "size": [
+        150,
+        64
+      ]
+    },
+    {
+      "id": "rules",
+      "type": "security",
+      "label": "Rules R001-R012",
+      "sublabel": "decisions.decide",
+      "pos": [
+        790,
+        100
+      ],
+      "size": [
+        150,
+        64
+      ],
+      "tag": "deterministic"
+    },
+    {
+      "id": "roles",
+      "type": "cloud",
+      "label": "LLM Roles",
+      "sublabel": "review, explain, fix",
+      "pos": [
+        1040,
+        320
+      ],
+      "size": [
+        150,
+        64
+      ]
+    },
+    {
+      "id": "guard",
+      "type": "security",
+      "label": "Guardrails",
+      "sublabel": "check every output",
+      "pos": [
+        1040,
+        100
+      ],
+      "size": [
+        150,
+        64
+      ]
+    },
+    {
+      "id": "providers",
+      "type": "external",
+      "label": "LLM Providers",
+      "sublabel": "Gemini / Groq / cassette",
+      "pos": [
+        1040,
+        540
+      ],
+      "size": [
+        150,
+        64
+      ]
+    },
+    {
+      "id": "store",
+      "type": "database",
+      "label": "Run Store",
+      "sublabel": "output/runs JSON files",
+      "pos": [
+        290,
+        540
+      ],
+      "size": [
+        150,
+        64
+      ]
+    },
+    {
+      "id": "tracer",
+      "type": "messagebus",
+      "label": "Trace Log",
+      "sublabel": "JSONL + Langfuse opt.",
+      "pos": [
+        790,
+        540
+      ],
+      "size": [
+        150,
+        64
+      ]
+    },
+    {
+      "id": "cli",
+      "type": "backend",
+      "label": "CLI (typer)",
+      "sublabel": "finagent run / serve",
+      "pos": [
+        290,
+        100
+      ],
+      "size": [
+        150,
+        64
+      ]
+    },
+    {
+      "id": "post",
+      "type": "backend",
+      "label": "Posting + Checks",
+      "sublabel": "lineage, 6 invariants",
+      "pos": [
+        540,
+        540
+      ],
+      "size": [
+        150,
+        64
+      ]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "security-group",
+      "label": "Deterministic kernel: Decimal math, sees the trial balance",
+      "wraps": [
+        "pipeline",
+        "ingest",
+        "rules",
+        "graph"
+      ]
+    },
+    {
+      "kind": "region",
+      "label": "LLM side: one entry + findings only",
+      "wraps": [
+        "roles",
+        "guard",
+        "providers"
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "reviewer-ui",
+      "from": "reviewer",
+      "to": "ui",
+      "label": "approve / reject",
+      "labelDy": 90
+    },
+    {
+      "id": "ui-api",
+      "from": "ui",
+      "to": "api",
+      "label": "HTTP JSON",
+      "variant": "emphasis"
+    },
+    {
+      "id": "api-pipeline",
+      "from": "api",
+      "to": "pipeline",
+      "label": "POST /runs",
+      "variant": "emphasis",
+      "labelDy": 13
+    },
+    {
+      "id": "pipeline-ingest",
+      "from": "pipeline",
+      "to": "ingest",
+      "label": "load inputs"
+    },
+    {
+      "id": "pipeline-graph",
+      "from": "pipeline",
+      "to": "graph",
+      "label": "each entry",
+      "variant": "emphasis"
+    },
+    {
+      "id": "graph-rules",
+      "from": "graph",
+      "to": "rules",
+      "label": "validate + decide"
+    },
+    {
+      "id": "graph-roles",
+      "from": "graph",
+      "to": "roles",
+      "label": "entry + findings"
+    },
+    {
+      "id": "roles-guard",
+      "from": "roles",
+      "to": "guard",
+      "variant": "security",
+      "label": "check output"
+    },
+    {
+      "id": "roles-providers",
+      "from": "roles",
+      "to": "providers",
+      "label": "structured call",
+      "labelDy": 90
+    },
+    {
+      "id": "pipeline-store",
+      "from": "pipeline",
+      "to": "store",
+      "label": "manifest, decisions",
+      "labelDy": 90
+    },
+    {
+      "id": "graph-tracer",
+      "from": "graph",
+      "to": "tracer",
+      "label": "events",
+      "variant": "dashed",
+      "labelDy": 90
+    },
+    {
+      "id": "cli-pipeline",
+      "from": "cli",
+      "to": "pipeline",
+      "label": "finagent run"
+    },
+    {
+      "id": "pipeline-post",
+      "from": "pipeline",
+      "to": "post",
+      "label": "post + check",
+      "variant": "emphasis",
+      "labelDy": 24
+    },
+    {
+      "id": "post-store",
+      "from": "post",
+      "to": "store",
+      "label": "posted TB",
+      "labelDy": 22
+    },
+    {
+      "id": "api-store",
+      "from": "api",
+      "to": "store",
+      "label": "read run, save decision",
+      "labelDy": 24
+    }
+  ],
+  "cards": [
+    {
+      "dot": "emerald",
+      "title": "Deterministic core",
+      "items": [
+        "12 rules (R001-R012) find problems with evidence",
+        "decisions.decide: BLOCK = rejected, ESCALATE = quarantined, else accepted",
+        "Posting adds human approvals, keeps lineage, checks 6 invariants"
+      ]
+    },
+    {
+      "dot": "violet",
+      "title": "LLM, kept on a leash",
+      "items": [
+        "Never sees the trial balance",
+        "Can only add an escalation (R013), never remove a finding",
+        "Failed guardrail: retry once, then a fixed template"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Human gate and records",
+      "items": [
+        "Only quarantined entries can be approved, once",
+        "Run store: manifest, decisions, posted TB, human decisions, audit log",
+        "Default mode replays cassettes, no API key needed"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "key": "4fa61b6af6131e7d4511b104fb951ace665fc7585d7e4517a2a9db8d2c99bd4a",
+  "model": "gemini-2.5-flash",
+  "provider": "google_genai",
+  "recorded_at": "2026-10-01T15:20:15Z",
+  "request": {
+    "payload": {
+      "decision": "REJECTED",
+      "entry": {
+        "date": "2024-12-31",
+        "description": "<untrusted_data>Accrue utilities</untrusted_data>",
+        "id": "SYN-02",
+        "lines": [
+          {
+            "account": "6210",
+            "account_name": "Utilities",
+            "credit": "0.00",
+            "debit": "4200.01",
+            "line": 1,
+            "memo": "<untrusted_data>Utilities accrual</untrusted_data>"
+          },
+          {
+            "account": "2120",
+            "account_name": "Accrued Expenses",
+            "credit": "4200.00",
+            "debit": "0.00",
+            "line": 2,
+            "memo": "<untrusted_data>Accrued</untrusted_data>"
+          }
+        ],
+        "source": "<untrusted_data>AP</untrusted_data>",
+        "total_credit": "4200.00",
+        "total_debit": "4200.01"
+      },
+      "findings": [
+        {
+          "evidence": {
+            "difference": "0.01",
+            "total_credit": "4200.00",
+            "total_debit": "4200.01"
+          },
+          "message": "Debits total 4,200.01 but credits total 4,200.00, a difference of 0.01. We cannot tell which side is correct.",
+          "rule_id": "R001",
+          "severity": "BLOCK",
+          "suggested_action": "Ask the preparer which amount is right, then resubmit the entry.",
+          "title": "Entry does not balance"
+        }
+      ],
+      "role": "explainer"
+    },
+    "system_prompt_version": "8e08270bff2b"
+  },
+  "response": {
+    "details": [
+      "Debits total 4,200.01 but credits total 4,200.00, creating a difference of 0.01."
+    ],
+    "next_step": "Ask the preparer which amount is right, then edit and resubmit the entry.",
+    "summary": "The entry is rejected because the total debits of 4,200.01 do not equal the total credits of 4,200.00, resulting in an imbalance of 0.01."
+  },
+  "role": "explainer"
+}

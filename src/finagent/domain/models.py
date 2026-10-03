@@ -232,8 +232,8 @@ class FixCandidate(BaseModel):
     label: str
     rationale: str
     lines: list[JeLine]
-    revalidation: list[Finding] = Field(default_factory=list[Finding])  # filled by code
-    resolves: bool = False  # True iff revalidation has no BLOCK/ESCALATE
+    revalidation: list[Finding] = Field(default_factory=list[Finding])  # filled by the rules
+    resolves: bool = False  # True only if revalidation has no BLOCK/ESCALATE
 
 
 class ImpactLine(BaseModel):
@@ -258,6 +258,7 @@ class EntryResult(BaseModel):
     explanation: str | None
     explanation_source: str  # "llm" | "template" | "none"
     explanation_detail: dict[str, JsonValue] | None = None  # structured summary/details/next_step
+    explanation_model: str | None = None  # model that wrote it ("llm" source only)
     fix_candidates: list[FixCandidate]
     needs_human_input: str | None = None
     impact: Impact

@@ -1,4 +1,4 @@
-"""Repo hygiene: money code must never go through binary floats (CLAUDE.md rule 1)."""
+"""Repo hygiene: money code must never go through binary floats (engineering rule 1)."""
 
 from __future__ import annotations
 

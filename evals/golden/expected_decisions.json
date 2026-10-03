@@ -1,0 +1,13 @@
+{
+  "_source": "docs/02_DATA_SPEC.md section 7 (R009 rows per decision D4). rule_ids are deterministic findings in rule order; llm_rule_ids are findings the Intent Reviewer is expected to add (cassette/live modes only).",
+  "JE-001": {"decision": "ACCEPTED", "rule_ids": ["R009"], "llm_rule_ids": []},
+  "JE-002": {"decision": "REJECTED", "rule_ids": ["R001"], "llm_rule_ids": []},
+  "JE-003": {"decision": "QUARANTINED", "rule_ids": ["R007", "R007b", "R009"], "llm_rule_ids": []},
+  "JE-004": {"decision": "ACCEPTED", "rule_ids": ["R009", "R009"], "llm_rule_ids": []},
+  "JE-005": {"decision": "QUARANTINED", "rule_ids": ["R002", "R002b"], "llm_rule_ids": []},
+  "JE-006": {"decision": "ACCEPTED", "rule_ids": ["R009"], "llm_rule_ids": []},
+  "JE-007": {"decision": "ACCEPTED", "rule_ids": ["R009"], "llm_rule_ids": []},
+  "JE-008": {"decision": "REJECTED", "rule_ids": ["R005", "R011"], "llm_rule_ids": ["R013"]},
+  "JE-009": {"decision": "ACCEPTED", "rule_ids": [], "llm_rule_ids": []},
+  "JE-010": {"decision": "ACCEPTED", "rule_ids": ["R009"], "llm_rule_ids": []}
+}

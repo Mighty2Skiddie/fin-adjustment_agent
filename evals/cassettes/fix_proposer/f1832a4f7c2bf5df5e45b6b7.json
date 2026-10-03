@@ -1,0 +1,216 @@
+{
+  "key": "f1832a4f7c2bf5df5e45b6b72cdd2666e215f9b8315bfb4d022927095f094720",
+  "model": "gemini-2.5-flash",
+  "provider": "google_genai",
+  "recorded_at": "2026-10-01T15:23:27Z",
+  "request": {
+    "payload": {
+      "coa_excerpt": [
+        {
+          "code": "1110",
+          "name": "Cash and Cash Equivalents",
+          "type": "Asset"
+        },
+        {
+          "code": "1120",
+          "name": "Accounts Receivable",
+          "type": "Asset"
+        },
+        {
+          "code": "1121",
+          "name": "Allowance for Doubtful Accounts",
+          "type": "Asset"
+        },
+        {
+          "code": "1130",
+          "name": "Inventory - Raw Materials",
+          "type": "Asset"
+        },
+        {
+          "code": "1131",
+          "name": "Inventory - Finished Goods",
+          "type": "Asset"
+        },
+        {
+          "code": "1140",
+          "name": "Prepaid Expenses",
+          "type": "Asset"
+        },
+        {
+          "code": "1150",
+          "name": "Other Current Assets",
+          "type": "Asset"
+        },
+        {
+          "code": "6100",
+          "name": "Salaries and Wages",
+          "type": "Expense"
+        },
+        {
+          "code": "6110",
+          "name": "Employee Benefits",
+          "type": "Expense"
+        },
+        {
+          "code": "6120",
+          "name": "Payroll Taxes",
+          "type": "Expense"
+        },
+        {
+          "code": "6200",
+          "name": "Rent Expense",
+          "type": "Expense"
+        },
+        {
+          "code": "6210",
+          "name": "Utilities",
+          "type": "Expense"
+        },
+        {
+          "code": "6220",
+          "name": "Office Supplies",
+          "type": "Expense"
+        },
+        {
+          "code": "6300",
+          "name": "Marketing and Advertising",
+          "type": "Expense"
+        },
+        {
+          "code": "6310",
+          "name": "Travel and Entertainment",
+          "type": "Expense"
+        },
+        {
+          "code": "6400",
+          "name": "Professional Fees",
+          "type": "Expense"
+        },
+        {
+          "code": "6410",
+          "name": "Insurance",
+          "type": "Expense"
+        },
+        {
+          "code": "6500",
+          "name": "Depreciation Expense",
+          "type": "Expense"
+        },
+        {
+          "code": "6510",
+          "name": "Amortization Expense",
+          "type": "Expense"
+        },
+        {
+          "code": "6600",
+          "name": "Bad Debt Expense",
+          "type": "Expense"
+        },
+        {
+          "code": "6900",
+          "name": "Other Operating Expenses",
+          "type": "Expense"
+        }
+      ],
+      "entry": {
+        "date": "2024-12-01",
+        "description": "<untrusted_data>Insurance prepayment</untrusted_data>",
+        "id": "SYN-10",
+        "lines": [
+          {
+            "account": "1140",
+            "account_name": "Prepaid Expenses",
+            "credit": "1500.00",
+            "debit": "3000.00",
+            "line": 1,
+            "memo": "<untrusted_data>Both sides</untrusted_data>"
+          },
+          {
+            "account": "6410",
+            "account_name": "Insurance",
+            "credit": "1500.00",
+            "debit": "0.00",
+            "line": 2,
+            "memo": "<untrusted_data>Insurance</untrusted_data>"
+          }
+        ],
+        "source": "<untrusted_data>AP</untrusted_data>",
+        "total_credit": "3000.00",
+        "total_debit": "3000.00"
+      },
+      "findings": [
+        {
+          "evidence": {
+            "offending_line_indexes": [
+              1
+            ],
+            "reason": "line has both a debit and a credit"
+          },
+          "message": "Line(s) 1 carry both a debit and a credit; each line must be one side only.",
+          "rule_id": "R006",
+          "severity": "BLOCK",
+          "suggested_action": "Split each such line into a separate debit line and credit line.",
+          "title": "Malformed entry lines"
+        },
+        {
+          "evidence": {
+            "confidence": "1.00",
+            "implied_accounts": [
+              "1110"
+            ],
+            "llm_reason": "The description \"Insurance prepayment\" implies a payment involving a cash or bank account, but no such account is touched. Instead, the entry adjusts Prepaid Expenses (1140) and Insurance (6410)."
+          },
+          "message": "The description \"Insurance prepayment\" implies a payment involving a cash or bank account, but no such account is touched. Instead, the entry adjusts Prepaid Expenses (1140) and Insurance (6410).",
+          "rule_id": "R013",
+          "severity": "ESCALATE",
+          "suggested_action": "Ask the preparer to confirm what the entry is meant to do.",
+          "title": "Description does not match the lines"
+        }
+      ],
+      "role": "fix_proposer"
+    },
+    "system_prompt_version": "89120394b5e2"
+  },
+  "response": {
+    "candidates": [
+      {
+        "label": "Prepayment of 3000.00",
+        "lines": [
+          {
+            "account": "1140",
+            "credit": "0.00",
+            "debit": "3000.00",
+            "memo": "Insurance prepayment"
+          },
+          {
+            "account": "1110",
+            "credit": "3000.00",
+            "debit": "0.00",
+            "memo": "Cash payment for insurance"
+          }
+        ],
+        "rationale": "This candidate assumes the 3000.00 debit to Prepaid Expenses is the correct prepayment amount, resolving the malformed line and aligning with the description by crediting Cash."
+      },
+      {
+        "label": "Prepayment of 1500.00",
+        "lines": [
+          {
+            "account": "1140",
+            "credit": "0.00",
+            "debit": "1500.00",
+            "memo": "Insurance prepayment"
+          },
+          {
+            "account": "1110",
+            "credit": "1500.00",
+            "debit": "0.00",
+            "memo": "Cash payment for insurance"
+          }
+        ],
+        "rationale": "This candidate assumes the 1500.00 credit to Insurance Expense (or the 1500.00 credit component of the malformed line) represents the intended prepayment amount, resolving the malformed line and aligning with the description by crediting Cash."
+      }
+    ],
+    "needs_human_input": "The entry description 'Insurance prepayment' implies a cash payment, but the original entry contains both 3000.00 and 1500.00 as potential amounts for this prepayment. Please confirm the correct amount."
+  },
+  "role": "fix_proposer"
+}

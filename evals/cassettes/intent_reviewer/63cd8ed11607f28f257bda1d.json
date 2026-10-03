@@ -1,0 +1,171 @@
+{
+  "key": "63cd8ed11607f28f257bda1d6faa3b48b3a67f81b97377cb8de29403b411a732",
+  "model": "gemini-2.5-flash",
+  "provider": "google_genai",
+  "recorded_at": "2026-10-01T15:20:52Z",
+  "request": {
+    "payload": {
+      "coa_excerpt": [
+        {
+          "code": "1110",
+          "name": "Cash and Cash Equivalents",
+          "type": "Asset"
+        },
+        {
+          "code": "6100",
+          "name": "Salaries and Wages",
+          "type": "Expense"
+        },
+        {
+          "code": "6110",
+          "name": "Employee Benefits",
+          "type": "Expense"
+        },
+        {
+          "code": "6120",
+          "name": "Payroll Taxes",
+          "type": "Expense"
+        },
+        {
+          "code": "6200",
+          "name": "Rent Expense",
+          "type": "Expense"
+        },
+        {
+          "code": "6210",
+          "name": "Utilities",
+          "type": "Expense"
+        },
+        {
+          "code": "6220",
+          "name": "Office Supplies",
+          "type": "Expense"
+        },
+        {
+          "code": "6300",
+          "name": "Marketing and Advertising",
+          "type": "Expense"
+        },
+        {
+          "code": "6310",
+          "name": "Travel and Entertainment",
+          "type": "Expense"
+        },
+        {
+          "code": "6400",
+          "name": "Professional Fees",
+          "type": "Expense"
+        },
+        {
+          "code": "6410",
+          "name": "Insurance",
+          "type": "Expense"
+        },
+        {
+          "code": "6500",
+          "name": "Depreciation Expense",
+          "type": "Expense"
+        },
+        {
+          "code": "6510",
+          "name": "Amortization Expense",
+          "type": "Expense"
+        },
+        {
+          "code": "6600",
+          "name": "Bad Debt Expense",
+          "type": "Expense"
+        },
+        {
+          "code": "6900",
+          "name": "Other Operating Expenses",
+          "type": "Expense"
+        }
+      ],
+      "entry": {
+        "date": "2024-12-20",
+        "description": "<untrusted_data>Rotate payroll costs between cost centres</untrusted_data>",
+        "id": "SYN-05",
+        "lines": [
+          {
+            "account": "6100",
+            "account_name": "Salaries and Wages",
+            "credit": "0.00",
+            "debit": "1500.00",
+            "line": 1,
+            "memo": "<untrusted_data>a</untrusted_data>"
+          },
+          {
+            "account": "6110",
+            "account_name": "Employee Benefits",
+            "credit": "1500.00",
+            "debit": "0.00",
+            "line": 2,
+            "memo": "<untrusted_data>b</untrusted_data>"
+          },
+          {
+            "account": "6110",
+            "account_name": "Employee Benefits",
+            "credit": "0.00",
+            "debit": "1500.00",
+            "line": 3,
+            "memo": "<untrusted_data>c</untrusted_data>"
+          },
+          {
+            "account": "6120",
+            "account_name": "Payroll Taxes",
+            "credit": "1500.00",
+            "debit": "0.00",
+            "line": 4,
+            "memo": "<untrusted_data>d</untrusted_data>"
+          },
+          {
+            "account": "6120",
+            "account_name": "Payroll Taxes",
+            "credit": "0.00",
+            "debit": "1500.00",
+            "line": 5,
+            "memo": "<untrusted_data>e</untrusted_data>"
+          },
+          {
+            "account": "6100",
+            "account_name": "Salaries and Wages",
+            "credit": "1500.00",
+            "debit": "0.00",
+            "line": 6,
+            "memo": "<untrusted_data>f</untrusted_data>"
+          }
+        ],
+        "source": "<untrusted_data>Payroll</untrusted_data>",
+        "total_credit": "4500.00",
+        "total_debit": "4500.00"
+      },
+      "findings": [
+        {
+          "evidence": {
+            "distinct_accounts": 3,
+            "per_account_net": {
+              "6100": "0.00",
+              "6110": "0.00",
+              "6120": "0.00"
+            }
+          },
+          "message": "After netting, every account in the entry (6100 Salaries and Wages, 6110 Employee Benefits, 6120 Payroll Taxes) moves by 0.00, so no balance changes.",
+          "rule_id": "R005",
+          "severity": "BLOCK",
+          "suggested_action": "Ask the preparer which accounts were meant to move, then resubmit the entry.",
+          "title": "Entry changes nothing"
+        }
+      ],
+      "role": "intent_reviewer"
+    },
+    "system_prompt_version": "f580c9da3afa"
+  },
+  "response": {
+    "confidence": 1.0,
+    "consistent": false,
+    "implied_accounts": [],
+    "reason": "The description \"Rotate payroll costs between cost centres\" implies a transfer of costs, but the entry results in a net change of 0.00 for all accounts (6100, 6110, 6120), meaning no costs are actually rotated."
+  },
+  "role": "intent_reviewer"
+}

@@ -30,7 +30,7 @@ def test_finding_rejects_float_evidence(evidence: dict[str, object]) -> None:
 
 def test_coa_tree_shape() -> None:
     coa = CoaTree(load_coa())
-    # 72 accounts: the file has 73 lines including the header (spec §1 says "73 rows").
+    # 72 accounts: the file has 73 lines including the header.
     assert len(coa) == 72
     assert [a.code for a in coa.ancestors("2120")] == ["2100", "2000"]
     assert [a.code for a in coa.ancestors("3310")] == ["3300", "3000"]

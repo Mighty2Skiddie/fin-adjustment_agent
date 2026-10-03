@@ -1,0 +1,163 @@
+{
+  "key": "a0c449bd67ef30738bf083ade1e321b15d0ee6edc2c930398e2ed57e0b73683c",
+  "model": "gemini-2.5-flash",
+  "provider": "google_genai",
+  "recorded_at": "2026-10-01T14:18:27Z",
+  "request": {
+    "payload": {
+      "coa_excerpt": [
+        {
+          "code": "1110",
+          "name": "Cash and Cash Equivalents",
+          "type": "Asset"
+        },
+        {
+          "code": "1120",
+          "name": "Accounts Receivable",
+          "type": "Asset"
+        },
+        {
+          "code": "1121",
+          "name": "Allowance for Doubtful Accounts",
+          "type": "Asset"
+        },
+        {
+          "code": "1130",
+          "name": "Inventory - Raw Materials",
+          "type": "Asset"
+        },
+        {
+          "code": "1131",
+          "name": "Inventory - Finished Goods",
+          "type": "Asset"
+        },
+        {
+          "code": "1140",
+          "name": "Prepaid Expenses",
+          "type": "Asset"
+        },
+        {
+          "code": "1150",
+          "name": "Other Current Assets",
+          "type": "Asset"
+        },
+        {
+          "code": "7100",
+          "name": "Interest Income",
+          "type": "Revenue"
+        },
+        {
+          "code": "7200",
+          "name": "Interest Expense",
+          "type": "Expense"
+        },
+        {
+          "code": "7300",
+          "name": "FX Gain/Loss - Realized",
+          "type": "Expense"
+        },
+        {
+          "code": "7310",
+          "name": "FX Gain/Loss - Unrealized",
+          "type": "Expense"
+        },
+        {
+          "code": "7400",
+          "name": "Gain/Loss on Disposal of Assets",
+          "type": "Expense"
+        }
+      ],
+      "entry": {
+        "date": "2024-12-31",
+        "description": "<untrusted_data>FX revaluation of EUR cash balance to period-end rate</untrusted_data>",
+        "id": "JE-003",
+        "lines": [
+          {
+            "account": "1110",
+            "account_name": "Cash and Cash Equivalents",
+            "credit": "0.00",
+            "debit": "11200.00",
+            "line": 1,
+            "memo": "<untrusted_data>EUR cash uplift</untrusted_data>"
+          },
+          {
+            "account": "7310",
+            "account_name": "FX Gain/Loss - Unrealized",
+            "credit": "11200.00",
+            "debit": "0.00",
+            "line": 2,
+            "memo": "<untrusted_data>Unrealized FX gain</untrusted_data>"
+          }
+        ],
+        "source": "<untrusted_data>FX reval calc</untrusted_data>",
+        "total_credit": "11200.00",
+        "total_debit": "11200.00"
+      },
+      "findings": [
+        {
+          "evidence": {
+            "booked": "11200.00",
+            "currencies": [
+              "EUR",
+              "GBP"
+            ],
+            "excluded_currencies": [
+              "GBP"
+            ],
+            "expected_avg_basis": "10730.20",
+            "expected_opening_basis": "19809.60",
+            "fx_account": "7310",
+            "revalued_account": "1110"
+          },
+          "message": "The system already translates the EUR, GBP balances of 1110 Cash and Cash Equivalents at the period-end rate (or the configured fallback where one is missing), so this 11,200.00 entry to 7310 FX Gain/Loss - Unrealized would count the same FX gain or loss twice.",
+          "rule_id": "R007",
+          "severity": "ESCALATE",
+          "suggested_action": "Confirm with finance who owns FX revaluation (Clarifying Q1) before approving; if the system translation stands, reject this entry.",
+          "title": "FX revaluation would be double-counted"
+        },
+        {
+          "evidence": {
+            "booked": "11200.00",
+            "currencies": [
+              "EUR",
+              "GBP"
+            ],
+            "excluded_currencies": [
+              "GBP"
+            ],
+            "expected_avg_basis": "10730.20",
+            "expected_opening_basis": "19809.60",
+            "fx_account": "7310",
+            "revalued_account": "1110"
+          },
+          "message": "Booked 11,200.00 matches neither 10,730.20 (period-end vs average rate) nor 19,809.60 (period-end vs opening rate). Excluded from the expected amounts (GBP): the rate table lacks a period-end, average or opening rate needed to value it.",
+          "rule_id": "R007b",
+          "severity": "WARN",
+          "suggested_action": "Ask the preparer for the revaluation workings and which rate basis they used.",
+          "title": "Revaluation amount does not match either rate basis"
+        },
+        {
+          "evidence": {
+            "account": "7310",
+            "amount": "11200.00",
+            "base_balance": "42000.00",
+            "pct": "0.2667",
+            "threshold": "0.20"
+          },
+          "message": "This entry moves 11,200.00 on 7310 FX Gain/Loss - Unrealized, which is 26.7% of its current balance of 42,000.00.",
+          "rule_id": "R009",
+          "severity": "INFO",
+          "suggested_action": "Confirm the amount with the preparer and check the supporting schedule.",
+          "title": "Large relative to the account balance"
+        }
+      ],
+      "role": "fix_proposer"
+    },
+    "system_prompt_version": "89120394b5e2"
+  },
+  "response": {
+    "candidates": [],
+    "needs_human_input": "Who is responsible for the FX revaluation of account 1110 Cash and Cash Equivalents? Is it the system, or should this manual entry be posted?"
+  },
+  "role": "fix_proposer"
+}

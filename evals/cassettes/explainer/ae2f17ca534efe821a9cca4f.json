@@ -1,0 +1,95 @@
+{
+  "key": "ae2f17ca534efe821a9cca4ffed3205b4e61e280a140609c6728ac7f2bc79279",
+  "model": "gemini-2.5-flash",
+  "provider": "google_genai",
+  "recorded_at": "2026-10-01T14:18:40Z",
+  "request": {
+    "payload": {
+      "decision": "QUARANTINED",
+      "entry": {
+        "date": "2024-12-15",
+        "description": "<untrusted_data>Reclass conference travel from old code</untrusted_data>",
+        "id": "JE-005",
+        "lines": [
+          {
+            "account": "6315",
+            "account_name": "(not in chart of accounts)",
+            "credit": "0.00",
+            "debit": "18500.00",
+            "line": 1,
+            "memo": "<untrusted_data>Conf travel</untrusted_data>"
+          },
+          {
+            "account": "6310",
+            "account_name": "Travel and Entertainment",
+            "credit": "18500.00",
+            "debit": "0.00",
+            "line": 2,
+            "memo": "<untrusted_data>Out of T&E</untrusted_data>"
+          }
+        ],
+        "source": "<untrusted_data>AP team</untrusted_data>",
+        "total_credit": "18500.00",
+        "total_debit": "18500.00"
+      },
+      "findings": [
+        {
+          "evidence": {
+            "lines": [
+              1
+            ],
+            "missing_accounts": [
+              "6315"
+            ]
+          },
+          "message": "Account 6315 is not in the chart of accounts (line 1), so the entry cannot be reported until the account is set up or the line is corrected.",
+          "rule_id": "R002",
+          "severity": "ESCALATE",
+          "suggested_action": "Add 6315 to the chart of accounts under its parent range, or correct the account on the line. Accounts are never mapped automatically.",
+          "title": "Account not in chart of accounts"
+        },
+        {
+          "evidence": {
+            "candidates": [
+              {
+                "code": "6310",
+                "name": "Travel and Entertainment",
+                "score": "0.44",
+                "would_create_noop": true
+              },
+              {
+                "code": "8200",
+                "name": "Deferred Tax Expense",
+                "score": "0.41",
+                "would_create_noop": false
+              },
+              {
+                "code": "2160",
+                "name": "Deferred Revenue",
+                "score": "0.40",
+                "would_create_noop": false
+              }
+            ],
+            "missing_account": "6315"
+          },
+          "message": "Closest existing accounts to 6315: 6310 Travel and Entertainment, 8200 Deferred Tax Expense, 2160 Deferred Revenue. Remapping 6315 to 6310 Travel and Entertainment would cancel the entry, because that account is already on the other side (circular: the entry would move nothing).",
+          "rule_id": "R002b",
+          "severity": "INFO",
+          "suggested_action": "Add 6315 to the chart of accounts, or reject the entry; do not remap.",
+          "title": "Closest existing accounts"
+        }
+      ],
+      "role": "explainer"
+    },
+    "system_prompt_version": "8e08270bff2b"
+  },
+  "response": {
+    "details": [
+      "Account 6315 on line 1 is not in the chart of accounts, so the entry cannot be reported until the account is set up or the line is corrected.",
+      "The closest existing accounts to 6315 are 6310 Travel and Entertainment, 8200 Deferred Tax Expense, and 2160 Deferred Revenue. Remapping 6315 to 6310 Travel and Entertainment would cancel the entry because that account is already on the other side."
+    ],
+    "next_step": "To resolve this, either add account 6315 to the chart of accounts or correct the account code on line 1 of journal entry JE-005.",
+    "summary": "Journal entry JE-005 is quarantined because account 6315 is not in the chart of accounts, preventing the entry from being reported."
+  },
+  "role": "explainer"
+}

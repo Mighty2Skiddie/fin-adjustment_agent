@@ -1,0 +1,67 @@
+{
+  "key": "08632996a2a1afa4610408d02ff92b4880615097fad4a2d0c777ecab07632916",
+  "model": "gemini-2.5-flash",
+  "provider": "google_genai",
+  "recorded_at": "2026-10-01T15:23:41Z",
+  "request": {
+    "payload": {
+      "decision": "REJECTED",
+      "entry": {
+        "date": "2024-12-31",
+        "description": "<untrusted_data>One-sided legal accrual</untrusted_data>",
+        "id": "SYN-11",
+        "lines": [
+          {
+            "account": "6400",
+            "account_name": "Professional Fees",
+            "credit": "0.00",
+            "debit": "2500.00",
+            "line": 1,
+            "memo": "<untrusted_data>Legal</untrusted_data>"
+          }
+        ],
+        "source": "<untrusted_data>Legal</untrusted_data>",
+        "total_credit": "0.00",
+        "total_debit": "2500.00"
+      },
+      "findings": [
+        {
+          "evidence": {
+            "difference": "2500.00",
+            "total_credit": "0.00",
+            "total_debit": "2500.00"
+          },
+          "message": "Debits total 2,500.00 but credits total 0.00, a difference of 2,500.00. We cannot tell which side is correct.",
+          "rule_id": "R001",
+          "severity": "BLOCK",
+          "suggested_action": "Ask the preparer which amount is right, then resubmit the entry.",
+          "title": "Entry does not balance"
+        },
+        {
+          "evidence": {
+            "offending_line_indexes": [
+              1
+            ],
+            "reason": "fewer than two lines"
+          },
+          "message": "The entry has fewer than two lines, so it cannot record both sides.",
+          "rule_id": "R006",
+          "severity": "BLOCK",
+          "suggested_action": "Ask the preparer to add the missing side of the entry and resubmit.",
+          "title": "Malformed entry lines"
+        }
+      ],
+      "role": "explainer"
+    },
+    "system_prompt_version": "8e08270bff2b"
+  },
+  "response": {
+    "details": [
+      "The entry's debits total 2,500.00 and its credits total 0.00, resulting in a difference of 2,500.00.",
+      "The entry has fewer than two lines, which means it cannot record both sides of a transaction."
+    ],
+    "next_step": "Ask the preparer to add the missing side of the entry and ensure debits and credits balance, then resubmit the entry.",
+    "summary": "The entry is rejected because its debits and credits do not balance, showing a difference of 2,500.00, and it only contains one line."
+  },
+  "role": "explainer"
+}

@@ -1,0 +1,123 @@
+{
+  "key": "1b70d163bc68c1a5ad2a6987d886e7b8bfc467dc2d86950cb84652766f323cdf",
+  "model": "gemini-2.5-flash",
+  "provider": "google_genai",
+  "recorded_at": "2026-10-01T14:19:29Z",
+  "request": {
+    "payload": {
+      "coa_excerpt": [
+        {
+          "code": "1110",
+          "name": "Cash and Cash Equivalents",
+          "type": "Asset"
+        },
+        {
+          "code": "2110",
+          "name": "Accounts Payable",
+          "type": "Liability"
+        },
+        {
+          "code": "2120",
+          "name": "Accrued Expenses",
+          "type": "Liability"
+        },
+        {
+          "code": "2130",
+          "name": "Short-term Debt",
+          "type": "Liability"
+        },
+        {
+          "code": "2140",
+          "name": "Current Portion of Long-term Debt",
+          "type": "Liability"
+        },
+        {
+          "code": "2150",
+          "name": "Income Tax Payable",
+          "type": "Liability"
+        },
+        {
+          "code": "2160",
+          "name": "Deferred Revenue",
+          "type": "Liability"
+        },
+        {
+          "code": "2170",
+          "name": "Intercompany Payable",
+          "type": "Liability"
+        },
+        {
+          "code": "2210",
+          "name": "Long-term Debt",
+          "type": "Liability"
+        },
+        {
+          "code": "2220",
+          "name": "Lease Liability - Long-term",
+          "type": "Liability"
+        },
+        {
+          "code": "2230",
+          "name": "Deferred Tax Liability",
+          "type": "Liability"
+        },
+        {
+          "code": "2240",
+          "name": "Pension Obligations",
+          "type": "Liability"
+        }
+      ],
+      "entry": {
+        "date": "2024-12-31",
+        "description": "<untrusted_data>Reclass long-term debt current portion</untrusted_data>",
+        "id": "JE-010",
+        "lines": [
+          {
+            "account": "2210",
+            "account_name": "Long-term Debt",
+            "credit": "0.00",
+            "debit": "200000.00",
+            "line": 1,
+            "memo": "<untrusted_data>Out of LT debt</untrusted_data>"
+          },
+          {
+            "account": "2140",
+            "account_name": "Current Portion of Long-term Debt",
+            "credit": "200000.00",
+            "debit": "0.00",
+            "line": 2,
+            "memo": "<untrusted_data>Into current</untrusted_data>"
+          }
+        ],
+        "source": "<untrusted_data>Treasury schedule</untrusted_data>",
+        "total_credit": "200000.00",
+        "total_debit": "200000.00"
+      },
+      "findings": [
+        {
+          "evidence": {
+            "account": "2140",
+            "amount": "200000.00",
+            "base_balance": "800000.00",
+            "pct": "0.2500",
+            "threshold": "0.20"
+          },
+          "message": "This entry moves 200,000.00 on 2140 Current Portion of Long-term Debt, which is 25.0% of its current balance of 800,000.00.",
+          "rule_id": "R009",
+          "severity": "INFO",
+          "suggested_action": "Confirm the amount with the preparer and check the supporting schedule.",
+          "title": "Large relative to the account balance"
+        }
+      ],
+      "role": "intent_reviewer"
+    },
+    "system_prompt_version": "f580c9da3afa"
+  },
+  "response": {
+    "confidence": 1.0,
+    "consistent": true,
+    "implied_accounts": [],
+    "reason": "The entry debits 2210 Long-term Debt and credits 2140 Current Portion of Long-term Debt for 200000.00, which aligns with reclassifying long-term debt to its current portion."
+  },
+  "role": "intent_reviewer"
+}

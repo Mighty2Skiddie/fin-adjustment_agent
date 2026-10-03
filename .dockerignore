@@ -1,0 +1,22 @@
+# Never ship secrets or local environments
+.env
+.env.*
+!.env.example
+.venv/
+**/__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Built inside the image
+frontend/node_modules/
+frontend/dist/
+
+# Not needed at runtime
+.git/
+.github/
+tests/
+docs/00_ASSIGNMENT_ORIGINAL.pdf
+output/failed/

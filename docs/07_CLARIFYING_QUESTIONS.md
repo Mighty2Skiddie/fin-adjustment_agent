@@ -1,8 +1,9 @@
-# 07 — Clarifying questions (email these before starting)
+# 07 — Clarifying questions (written before starting)
 
-The brief allows up to three pre-start questions and penalises asking none. Each question
-below comes from a concrete ambiguity in the data; each states the fallback we will apply
-if no answer arrives, so the build is never blocked.
+The brief allows up to three questions before starting, and penalises asking none. Each
+question below comes from a real gap in the data. Each one also states the fallback we use
+if no answer arrives, so the build is never blocked. Until an answer arrives, the app
+uses these fallbacks.
 
 ---
 
@@ -49,11 +50,12 @@ Pranav
 
 ## Why these three (for the architecture doc)
 
-- Q1 decides whether R007 (FX double-count) is a defect detector or a false positive and
-  whether FX translation lives in the kernel at all.
-- Q2 decides whether SOCIE/cash-flow opening balances are even computable from the bundle.
-- Q3 decides the hard-block vs flag boundary that every statement depends on, and the
-  intercompany treatment that the brief lists as a core complexity.
+- Q1 decides if R007 (FX double-count) finds a real defect or a false alarm. It also decides
+  if our system should do FX translation at all.
+- Q2 decides if we can compute opening balances for the SOCIE and the cash-flow statement
+  from this data at all.
+- Q3 decides where we block and where we only flag. Every statement depends on that line.
+  It also settles intercompany treatment, which the brief lists as a core difficulty.
 
 Questions we considered and did not ask (documented as assumptions instead): whether
 duplicate same-currency TB rows should be summed (README says yes); whether `TBD`

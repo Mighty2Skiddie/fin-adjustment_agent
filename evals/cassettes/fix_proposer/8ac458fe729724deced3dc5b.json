@@ -1,0 +1,171 @@
+{
+  "key": "8ac458fe729724deced3dc5b79265895f5bf9c7a23c39c7ca20c75c8f70c94a7",
+  "model": "gemini-2.5-flash",
+  "provider": "google_genai",
+  "recorded_at": "2026-10-01T14:18:05Z",
+  "request": {
+    "payload": {
+      "coa_excerpt": [
+        {
+          "code": "1110",
+          "name": "Cash and Cash Equivalents",
+          "type": "Asset"
+        },
+        {
+          "code": "6100",
+          "name": "Salaries and Wages",
+          "type": "Expense"
+        },
+        {
+          "code": "6110",
+          "name": "Employee Benefits",
+          "type": "Expense"
+        },
+        {
+          "code": "6120",
+          "name": "Payroll Taxes",
+          "type": "Expense"
+        },
+        {
+          "code": "6200",
+          "name": "Rent Expense",
+          "type": "Expense"
+        },
+        {
+          "code": "6210",
+          "name": "Utilities",
+          "type": "Expense"
+        },
+        {
+          "code": "6220",
+          "name": "Office Supplies",
+          "type": "Expense"
+        },
+        {
+          "code": "6300",
+          "name": "Marketing and Advertising",
+          "type": "Expense"
+        },
+        {
+          "code": "6310",
+          "name": "Travel and Entertainment",
+          "type": "Expense"
+        },
+        {
+          "code": "6400",
+          "name": "Professional Fees",
+          "type": "Expense"
+        },
+        {
+          "code": "6410",
+          "name": "Insurance",
+          "type": "Expense"
+        },
+        {
+          "code": "6500",
+          "name": "Depreciation Expense",
+          "type": "Expense"
+        },
+        {
+          "code": "6510",
+          "name": "Amortization Expense",
+          "type": "Expense"
+        },
+        {
+          "code": "6600",
+          "name": "Bad Debt Expense",
+          "type": "Expense"
+        },
+        {
+          "code": "6900",
+          "name": "Other Operating Expenses",
+          "type": "Expense"
+        }
+      ],
+      "entry": {
+        "date": "2024-12-28",
+        "description": "<untrusted_data>Reclassify marketing spend wrongly booked to T&E</untrusted_data>",
+        "id": "JE-002",
+        "lines": [
+          {
+            "account": "6300",
+            "account_name": "Marketing and Advertising",
+            "credit": "0.00",
+            "debit": "28500.00",
+            "line": 1,
+            "memo": "<untrusted_data>Move from T&E</untrusted_data>"
+          },
+          {
+            "account": "6310",
+            "account_name": "Travel and Entertainment",
+            "credit": "25000.00",
+            "debit": "0.00",
+            "line": 2,
+            "memo": "<untrusted_data>Reverse from T&E</untrusted_data>"
+          }
+        ],
+        "source": "<untrusted_data>Controller note 2024-12-28</untrusted_data>",
+        "total_credit": "25000.00",
+        "total_debit": "28500.00"
+      },
+      "findings": [
+        {
+          "evidence": {
+            "difference": "3500.00",
+            "total_credit": "25000.00",
+            "total_debit": "28500.00"
+          },
+          "message": "Debits total 28,500.00 but credits total 25,000.00, a difference of 3,500.00. We cannot tell which side is correct.",
+          "rule_id": "R001",
+          "severity": "BLOCK",
+          "suggested_action": "Ask the preparer which amount is right, then resubmit the entry.",
+          "title": "Entry does not balance"
+        }
+      ],
+      "role": "fix_proposer"
+    },
+    "system_prompt_version": "89120394b5e2"
+  },
+  "response": {
+    "candidates": [
+      {
+        "label": "Adjust credit to 28,500.00",
+        "lines": [
+          {
+            "account": "6300",
+            "credit": "0.00",
+            "debit": "28500.00",
+            "memo": "Move from T&E"
+          },
+          {
+            "account": "6310",
+            "credit": "28500.00",
+            "debit": "0.00",
+            "memo": "Reverse from T&E"
+          }
+        ],
+        "rationale": "This candidate adjusts the credit amount on line 2 to 28,500.00 to match the debit amount, resolving the imbalance."
+      },
+      {
+        "label": "Adjust debit to 25,000.00",
+        "lines": [
+          {
+            "account": "6300",
+            "credit": "0.00",
+            "debit": "25000.00",
+            "memo": "Move from T&E"
+          },
+          {
+            "account": "6310",
+            "credit": "25000.00",
+            "debit": "0.00",
+            "memo": "Reverse from T&E"
+          }
+        ],
+        "rationale": "This candidate adjusts the debit amount on line 1 to 25,000.00 to match the credit amount, resolving the imbalance."
+      }
+    ],
+    "needs_human_input": "Which amount is correct for the reclassification: 28,500.00 or 25,000.00?"
+  },
+  "role": "fix_proposer"
+}

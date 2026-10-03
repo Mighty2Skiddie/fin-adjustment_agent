@@ -1,0 +1,57 @@
+/*
+ * Design tokens for the "working paper" look.
+ *
+ * The seven base colours come from the design spec (docs/05_FRONTEND_SPEC.md). Some of them
+ * are too faint for small text on paper (amber is ~3.4:1), so text uses an "-ink" variant
+ * that clears 4.5:1, while fills and borders keep the base colour.
+ *
+ * Dark mode follows the OS (prefers-color-scheme).
+ */
+
+:root {
+  color-scheme: light;
+
+  /* base palette */
+  --paper: #f7f6f2;
+  --ink: #1c1f23;
+  --rule: #d9d6ce;
+  --ledger-green: #2f6b4f;
+  --ledger-red: #a33a2e;
+  --ledger-amber: #b07a1f;
+  --act: #1f4e8c;
+
+  /* derived */
+  --ink-muted: #565b62; /* secondary text, 6.3:1 on paper */
+  --surface: #fdfcf9; /* cards, drawers, expanded rows */
+  --band: #efede7; /* table header, hover band */
+  --act-ink: #ffffff; /* text on --act */
+  --act-tint: color-mix(in srgb, var(--act) 9%, var(--paper));
+  --ledger-amber-ink: #7a5313; /* amber as text, 6.3:1 on paper */
+  --ledger-green-tint: color-mix(in srgb, var(--ledger-green) 10%, var(--paper));
+  --ledger-red-tint: color-mix(in srgb, var(--ledger-red) 10%, var(--paper));
+  --ledger-amber-tint: color-mix(in srgb, var(--ledger-amber) 14%, var(--paper));
+  --focus: var(--act);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --paper: #15171a;
+    --ink: #e8e6e1;
+    --rule: #2c3036;
+    --ledger-green: #6fb592;
+    --ledger-red: #e07a6b;
+    --ledger-amber: #e0b35c;
+    --act: #7fa8e0;
+
+    --ink-muted: #a3a29d;
+    --surface: #1b1e22;
+    --band: #1f2327;
+    --act-ink: #15171a;
+    --act-tint: color-mix(in srgb, var(--act) 14%, var(--paper));
+    --ledger-amber-ink: #e0b35c;
+    --ledger-green-tint: color-mix(in srgb, var(--ledger-green) 14%, var(--paper));
+    --ledger-red-tint: color-mix(in srgb, var(--ledger-red) 14%, var(--paper));
+    --ledger-amber-tint: color-mix(in srgb, var(--ledger-amber) 14%, var(--paper));
+  }
+}

@@ -1,0 +1,113 @@
+{
+  "key": "1f5eda987e82f93b2a48bd11bcbdfb591b3cc0c8f6534ff21ad7220454c256de",
+  "model": "gemini-2.5-flash",
+  "provider": "google_genai",
+  "recorded_at": "2026-10-01T14:18:56Z",
+  "request": {
+    "payload": {
+      "coa_excerpt": [
+        {
+          "code": "1110",
+          "name": "Cash and Cash Equivalents",
+          "type": "Asset"
+        },
+        {
+          "code": "1210",
+          "name": "Property, Plant & Equipment - Cost",
+          "type": "Asset"
+        },
+        {
+          "code": "1211",
+          "name": "Accumulated Depreciation - PPE",
+          "type": "Asset"
+        },
+        {
+          "code": "1220",
+          "name": "Intangible Assets - Cost",
+          "type": "Asset"
+        },
+        {
+          "code": "1221",
+          "name": "Accumulated Amortization",
+          "type": "Asset"
+        },
+        {
+          "code": "1230",
+          "name": "Goodwill",
+          "type": "Asset"
+        },
+        {
+          "code": "1240",
+          "name": "Long-term Investments",
+          "type": "Asset"
+        },
+        {
+          "code": "1250",
+          "name": "Deferred Tax Asset",
+          "type": "Asset"
+        },
+        {
+          "code": "8100",
+          "name": "Current Tax Expense",
+          "type": "Expense"
+        },
+        {
+          "code": "8200",
+          "name": "Deferred Tax Expense",
+          "type": "Expense"
+        }
+      ],
+      "entry": {
+        "date": "2024-12-31",
+        "description": "<untrusted_data>Deferred tax true-up</untrusted_data>",
+        "id": "JE-007",
+        "lines": [
+          {
+            "account": "8200",
+            "account_name": "Deferred Tax Expense",
+            "credit": "0.00",
+            "debit": "38000.00",
+            "line": 1,
+            "memo": "<untrusted_data>DTA reduction</untrusted_data>"
+          },
+          {
+            "account": "1250",
+            "account_name": "Deferred Tax Asset",
+            "credit": "38000.00",
+            "debit": "0.00",
+            "line": 2,
+            "memo": "<untrusted_data>Reduce DTA</untrusted_data>"
+          }
+        ],
+        "source": "<untrusted_data>Tax provision memo</untrusted_data>",
+        "total_credit": "38000.00",
+        "total_debit": "38000.00"
+      },
+      "findings": [
+        {
+          "evidence": {
+            "account": "8200",
+            "amount": "38000.00",
+            "base_balance": "120000.00",
+            "pct": "0.3167",
+            "threshold": "0.20"
+          },
+          "message": "This entry moves 38,000.00 on 8200 Deferred Tax Expense, which is 31.7% of its current balance of 120,000.00.",
+          "rule_id": "R009",
+          "severity": "INFO",
+          "suggested_action": "Confirm the amount with the preparer and check the supporting schedule.",
+          "title": "Large relative to the account balance"
+        }
+      ],
+      "role": "intent_reviewer"
+    },
+    "system_prompt_version": "f580c9da3afa"
+  },
+  "response": {
+    "confidence": 1.0,
+    "consistent": true,
+    "implied_accounts": [],
+    "reason": "The entry debits Deferred Tax Expense (8200) and credits Deferred Tax Asset (1250) for 38000.00, which is consistent with a deferred tax true-up."
+  },
+  "role": "intent_reviewer"
+}

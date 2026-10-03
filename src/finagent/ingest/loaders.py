@@ -96,7 +96,7 @@ def load_adjustments_raw(path: Path | None = None) -> dict[str, Any]:
 
 
 def entry_from_dict(e: dict[str, Any]) -> JournalEntry:
-    """JSON numbers are floats once parsed; `parse_money` goes through `str()` (spec §5)."""
+    """JSON numbers are floats once parsed; `parse_money` goes through `str()` to stay exact."""
     lines: list[dict[str, Any]] = e.get("lines") or []
     return JournalEntry(
         id=str(e["id"]),

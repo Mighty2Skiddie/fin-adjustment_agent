@@ -1,0 +1,104 @@
+{
+  "key": "fd2f63217b22b4944458291ea3930ef6abac6782007a37a204feb8c11d9ffbdd",
+  "model": "gemini-2.5-flash",
+  "provider": "google_genai",
+  "recorded_at": "2026-10-01T15:20:23Z",
+  "request": {
+    "payload": {
+      "coa_excerpt": [
+        {
+          "code": "1110",
+          "name": "Cash and Cash Equivalents",
+          "type": "Asset"
+        },
+        {
+          "code": "2110",
+          "name": "Accounts Payable",
+          "type": "Liability"
+        },
+        {
+          "code": "2120",
+          "name": "Accrued Expenses",
+          "type": "Liability"
+        },
+        {
+          "code": "2130",
+          "name": "Short-term Debt",
+          "type": "Liability"
+        },
+        {
+          "code": "2140",
+          "name": "Current Portion of Long-term Debt",
+          "type": "Liability"
+        },
+        {
+          "code": "2150",
+          "name": "Income Tax Payable",
+          "type": "Liability"
+        },
+        {
+          "code": "2160",
+          "name": "Deferred Revenue",
+          "type": "Liability"
+        },
+        {
+          "code": "2170",
+          "name": "Intercompany Payable",
+          "type": "Liability"
+        }
+      ],
+      "entry": {
+        "date": "2024-12-31",
+        "description": "<untrusted_data>Accrue operating costs to the header</untrusted_data>",
+        "id": "SYN-03",
+        "lines": [
+          {
+            "account": "6000",
+            "account_name": "Operating Expenses",
+            "credit": "0.00",
+            "debit": "5000.00",
+            "line": 1,
+            "memo": "<untrusted_data>Opex</untrusted_data>"
+          },
+          {
+            "account": "2120",
+            "account_name": "Accrued Expenses",
+            "credit": "5000.00",
+            "debit": "0.00",
+            "line": 2,
+            "memo": "<untrusted_data>Accrued</untrusted_data>"
+          }
+        ],
+        "source": "<untrusted_data>AP</untrusted_data>",
+        "total_credit": "5000.00",
+        "total_debit": "5000.00"
+      },
+      "findings": [
+        {
+          "evidence": {
+            "header_accounts": [
+              "6000"
+            ],
+            "lines": [
+              1
+            ]
+          },
+          "message": "6000 Operating Expenses is a header account that only totals its sub-accounts (line 1); amounts cannot be posted to header accounts directly.",
+          "rule_id": "R003",
+          "severity": "BLOCK",
+          "suggested_action": "Repost the line to the appropriate sub-account and resubmit.",
+          "title": "Posting to a header account"
+        }
+      ],
+      "role": "intent_reviewer"
+    },
+    "system_prompt_version": "f580c9da3afa"
+  },
+  "response": {
+    "confidence": 1.0,
+    "consistent": true,
+    "implied_accounts": [],
+    "reason": "The entry debits Operating Expenses (6000) and credits Accrued Expenses (2120) for 5000.00, which aligns with the description to \"Accrue operating costs\"."
+  },
+  "role": "intent_reviewer"
+}

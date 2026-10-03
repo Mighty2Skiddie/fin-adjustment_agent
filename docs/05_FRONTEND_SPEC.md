@@ -1,9 +1,10 @@
 # 05 — Frontend specification
 
-Vite + React 18 + TypeScript (strict) + Tailwind + shadcn/ui + TanStack Query + React Router.
-Lives in `frontend/`, builds to `frontend/dist`, served by FastAPI. The audience is **a
-controller reviewing a close** and **an evaluator judging an engineer**. The UI must feel like
-a serious finance tool, not a dashboard demo.
+Vite + React 19 (the plan said 18; see decision D1) + TypeScript (strict) + Tailwind CSS 4 +
+shadcn/ui + TanStack Query + React Router.
+It lives in `frontend/`, builds to `frontend/dist` and is served by FastAPI. The audience is
+**a controller reviewing a period close** and **an evaluator judging an engineer**. The UI must
+feel like a serious finance tool, not a dashboard demo.
 
 ## 1. Design direction (make these choices, don't default)
 
@@ -117,17 +118,25 @@ faithfulness (numbers / codes), schema validity, fallback rate; then per-entry e
 actual with a diff highlight. If the report is missing: empty state "Run `finagent eval`".
 
 ### 2.7 About (`/about`)
-Renders `ARCHITECTURE.md` (fetched from `/api/docs/architecture`, served as markdown) with the
-topology diagram as pre-formatted text, plus links: repository, Langfuse public trace (env
-`VITE_LANGFUSE_TRACE_URL`, hidden when absent), the three clarifying questions.
+Renders `ARCHITECTURE.md` (fetched from `/api/docs/architecture` as plain text and shown as
+markdown), plus links: repository, Langfuse public trace (env
+`VITE_LANGFUSE_TRACE_URL`, hidden when absent), the three clarifying questions and the
+assumptions register.
 
 ## 3. Components (`frontend/src/components`)
 
-`AppShell`, `RunTopBar`, `SeverityChip`, `DecisionChip`, `AssumptionChip`, `Money` (formats
-string → tabular mono, red for negative), `AccountCode`, `DataTable` (generic, sortable,
-sticky header, dense rows 36 px), `ExpandableRow`, `FindingList`, `EvidenceTable`,
-`ExplanationCard`, `FixCandidateCard`, `ImpactPreview`, `DecisionForm`, `LineageDrawer`,
-`TraceTimeline`, `JsonToggle`, `EmptyState`, `ErrorState`, `KeyboardHints`.
+Shared: `AppShell`, `RunTopBar`, `RunGate`, `PageHeader`, `StatStrip`, `SeverityChip`,
+`DecisionChip`, `AssumptionChip`, `Money` (formats string → tabular mono, red for negative),
+`AccountCode`, `DataTable` (generic, sortable, sticky header), `EvidenceTable`,
+`InvariantList`, `JsonToggle`, `KeyboardHints`, `SkeletonRows`, `EmptyState` and `ErrorState`
+(in `States.tsx`).
+
+By page folder: `entry/` (`QueueTable`, `QueueFilters`, `EntryPanel`, `EntryLines`,
+`FindingList`, `ExplanationCard`, `FixCandidates`, `ImpactPreview`, `DecisionPanel`,
+`LineagePreview`, `TraceTimeline`), `health/`, `ledger/` (`LedgerTable`,
+`GroupedLedgerTable`, `LineageDrawer`), `audit/`, `evals/`, `about/`. The plan named an
+`ExpandableRow` and a `DecisionForm`; in the build these became `QueueTable` and
+`DecisionPanel`.
 
 ## 4. Data layer (`frontend/src/api`)
 

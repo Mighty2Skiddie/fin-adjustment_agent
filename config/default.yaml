@@ -17,9 +17,13 @@ thresholds:
   fuzzy_match_min_score: 80               # rapidfuzz token_set_ratio 0-100
   mapping_confidence_auto: "0.85"         # proposals below this always go to a human (none auto-apply in this slice)
 llm:
-  mode: cassette                          # cassette | live | off   (off = deterministic templates only)
+  mode: cassette                          # cassette | live | record | off   (off = deterministic templates only)
   provider: google_genai                  # google_genai | groq | anthropic | openai | ollama
   model: ${LLM_MODEL:-gemini-2.5-flash}   # from env; see .env.example
+  fallback_provider: ${LLM_FALLBACK_PROVIDER:-groq}       # used when the primary errors or rate-limits
+  fallback_model: ${LLM_FALLBACK_MODEL:-openai/gpt-oss-120b}
+  intent_escalate_confidence: "0.70"      # R013 is ESCALATE at or above this, WARN below
+  timeout_s: 60
   temperature: 0
   max_retries: 1
   cassette_dir: evals/cassettes

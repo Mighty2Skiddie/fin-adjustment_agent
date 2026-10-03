@@ -1,0 +1,173 @@
+{
+  "key": "5dc40e185ac7fd295e7c41f6551042cf01950a240daccd8cf68b38c8c85ae45f",
+  "model": "gemini-2.5-flash",
+  "provider": "google_genai",
+  "recorded_at": "2026-10-01T14:18:53Z",
+  "request": {
+    "payload": {
+      "coa_excerpt": [
+        {
+          "code": "1110",
+          "name": "Cash and Cash Equivalents",
+          "type": "Asset"
+        },
+        {
+          "code": "1210",
+          "name": "Property, Plant & Equipment - Cost",
+          "type": "Asset"
+        },
+        {
+          "code": "1211",
+          "name": "Accumulated Depreciation - PPE",
+          "type": "Asset"
+        },
+        {
+          "code": "1220",
+          "name": "Intangible Assets - Cost",
+          "type": "Asset"
+        },
+        {
+          "code": "1221",
+          "name": "Accumulated Amortization",
+          "type": "Asset"
+        },
+        {
+          "code": "1230",
+          "name": "Goodwill",
+          "type": "Asset"
+        },
+        {
+          "code": "1240",
+          "name": "Long-term Investments",
+          "type": "Asset"
+        },
+        {
+          "code": "1250",
+          "name": "Deferred Tax Asset",
+          "type": "Asset"
+        },
+        {
+          "code": "6100",
+          "name": "Salaries and Wages",
+          "type": "Expense"
+        },
+        {
+          "code": "6110",
+          "name": "Employee Benefits",
+          "type": "Expense"
+        },
+        {
+          "code": "6120",
+          "name": "Payroll Taxes",
+          "type": "Expense"
+        },
+        {
+          "code": "6200",
+          "name": "Rent Expense",
+          "type": "Expense"
+        },
+        {
+          "code": "6210",
+          "name": "Utilities",
+          "type": "Expense"
+        },
+        {
+          "code": "6220",
+          "name": "Office Supplies",
+          "type": "Expense"
+        },
+        {
+          "code": "6300",
+          "name": "Marketing and Advertising",
+          "type": "Expense"
+        },
+        {
+          "code": "6310",
+          "name": "Travel and Entertainment",
+          "type": "Expense"
+        },
+        {
+          "code": "6400",
+          "name": "Professional Fees",
+          "type": "Expense"
+        },
+        {
+          "code": "6410",
+          "name": "Insurance",
+          "type": "Expense"
+        },
+        {
+          "code": "6500",
+          "name": "Depreciation Expense",
+          "type": "Expense"
+        },
+        {
+          "code": "6510",
+          "name": "Amortization Expense",
+          "type": "Expense"
+        },
+        {
+          "code": "6600",
+          "name": "Bad Debt Expense",
+          "type": "Expense"
+        },
+        {
+          "code": "6900",
+          "name": "Other Operating Expenses",
+          "type": "Expense"
+        }
+      ],
+      "entry": {
+        "date": "2024-12-31",
+        "description": "<untrusted_data>Depreciation catch-up — Q4</untrusted_data>",
+        "id": "JE-006",
+        "lines": [
+          {
+            "account": "6500",
+            "account_name": "Depreciation Expense",
+            "credit": "0.00",
+            "debit": "215000.00",
+            "line": 1,
+            "memo": "<untrusted_data>Q4 dep</untrusted_data>"
+          },
+          {
+            "account": "1211",
+            "account_name": "Accumulated Depreciation - PPE",
+            "credit": "215000.00",
+            "debit": "0.00",
+            "line": 2,
+            "memo": "<untrusted_data>Accum dep</untrusted_data>"
+          }
+        ],
+        "source": "<untrusted_data>Fixed asset register</untrusted_data>",
+        "total_credit": "215000.00",
+        "total_debit": "215000.00"
+      },
+      "findings": [
+        {
+          "evidence": {
+            "account": "6500",
+            "amount": "215000.00",
+            "base_balance": "850000.00",
+            "pct": "0.2529",
+            "threshold": "0.20"
+          },
+          "message": "This entry moves 215,000.00 on 6500 Depreciation Expense, which is 25.3% of its current balance of 850,000.00.",
+          "rule_id": "R009",
+          "severity": "INFO",
+          "suggested_action": "Confirm the amount with the preparer and check the supporting schedule.",
+          "title": "Large relative to the account balance"
+        }
+      ],
+      "role": "intent_reviewer"
+    },
+    "system_prompt_version": "f580c9da3afa"
+  },
+  "response": {
+    "confidence": 1.0,
+    "consistent": true,
+    "implied_accounts": [],
+    "reason": "The entry debits Depreciation Expense (6500) and credits Accumulated Depreciation - PPE (1211) for 215000.00, which is consistent with a depreciation entry."
+  },
+  "role": "intent_reviewer"
+}

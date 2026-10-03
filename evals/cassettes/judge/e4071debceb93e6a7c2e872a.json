@@ -1,0 +1,59 @@
+{
+  "key": "e4071debceb93e6a7c2e872aa55c83dbe4daf0ca9bfa6602655054089097fec0",
+  "model": "gemini-2.5-flash",
+  "provider": "google_genai",
+  "recorded_at": "2026-10-01T15:24:45Z",
+  "request": {
+    "payload": {
+      "decision": "REJECTED",
+      "entry": {
+        "date": "2025-01-02",
+        "description": "<untrusted_data>Accrue January rent</untrusted_data>",
+        "id": "SYN-04",
+        "lines": [
+          {
+            "account": "6200",
+            "account_name": "Rent Expense",
+            "credit": "0.00",
+            "debit": "40000.00",
+            "line": 1,
+            "memo": "<untrusted_data>Rent</untrusted_data>"
+          },
+          {
+            "account": "2120",
+            "account_name": "Accrued Expenses",
+            "credit": "40000.00",
+            "debit": "0.00",
+            "line": 2,
+            "memo": "<untrusted_data>Accrued</untrusted_data>"
+          }
+        ],
+        "source": "<untrusted_data>AP</untrusted_data>",
+        "total_credit": "40000.00",
+        "total_debit": "40000.00"
+      },
+      "explanation": "The entry is dated 2025-01-02, which falls outside the current accounting period of 2024-10-01 to 2024-12-31, causing it to be rejected.\n- The entry is dated 2025-01-02, which is outside the period from 2024-10-01 to 2024-12-31.\nNext step: Review the entry date and correct it to fall within the current period, or post it in the correct period if the date is accurate, then resubmit the entry.",
+      "findings": [
+        {
+          "evidence": {
+            "date": "2025-01-02",
+            "period_end": "2024-12-31",
+            "period_start": "2024-10-01"
+          },
+          "message": "The entry is dated 2025-01-02, outside the period 2024-10-01 to 2024-12-31. Out-of-period postings need a separate workflow.",
+          "rule_id": "R004",
+          "severity": "BLOCK",
+          "suggested_action": "Confirm the correct date; if it belongs to another period, post it there.",
+          "title": "Entry dated outside the period"
+        }
+      ],
+      "role": "judge"
+    },
+    "system_prompt_version": "359105d4f397"
+  },
+  "response": {
+    "reason": "The explanation clearly identifies the issue with the date, provides the relevant dates, and offers a direct, actionable next step for the controller.",
+    "score": 5
+  },
+  "role": "judge"
+}

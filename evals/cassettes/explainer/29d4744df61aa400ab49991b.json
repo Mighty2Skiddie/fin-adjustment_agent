@@ -1,0 +1,92 @@
+{
+  "key": "29d4744df61aa400ab49991bf99aa896c8a98f21432b8ad1936041bd6a241037",
+  "model": "gemini-2.5-flash",
+  "provider": "google_genai",
+  "recorded_at": "2026-10-01T15:22:05Z",
+  "request": {
+    "payload": {
+      "decision": "QUARANTINED",
+      "entry": {
+        "date": "2024-12-31",
+        "description": "<untrusted_data>FX revaluation of GBP cash</untrusted_data>",
+        "id": "SYN-07",
+        "lines": [
+          {
+            "account": "1110",
+            "account_name": "Cash and Cash Equivalents",
+            "credit": "0.00",
+            "debit": "2000.00",
+            "line": 1,
+            "memo": "<untrusted_data>GBP cash uplift</untrusted_data>"
+          },
+          {
+            "account": "7310",
+            "account_name": "FX Gain/Loss - Unrealized",
+            "credit": "2000.00",
+            "debit": "0.00",
+            "line": 2,
+            "memo": "<untrusted_data>Unrealized FX gain</untrusted_data>"
+          }
+        ],
+        "source": "<untrusted_data>FX reval calc</untrusted_data>",
+        "total_credit": "2000.00",
+        "total_debit": "2000.00"
+      },
+      "findings": [
+        {
+          "evidence": {
+            "booked": "2000.00",
+            "currencies": [
+              "EUR",
+              "GBP"
+            ],
+            "excluded_currencies": [
+              "GBP"
+            ],
+            "expected_avg_basis": "10730.20",
+            "expected_opening_basis": "19809.60",
+            "fx_account": "7310",
+            "revalued_account": "1110"
+          },
+          "message": "The system already translates the EUR, GBP balances of 1110 Cash and Cash Equivalents at the period-end rate (or the configured fallback where one is missing), so this 2,000.00 entry to 7310 FX Gain/Loss - Unrealized would count the same FX gain or loss twice.",
+          "rule_id": "R007",
+          "severity": "ESCALATE",
+          "suggested_action": "Confirm with finance who owns FX revaluation (Clarifying Q1) before approving; if the system translation stands, reject this entry.",
+          "title": "FX revaluation would be double-counted"
+        },
+        {
+          "evidence": {
+            "booked": "2000.00",
+            "currencies": [
+              "EUR",
+              "GBP"
+            ],
+            "excluded_currencies": [
+              "GBP"
+            ],
+            "expected_avg_basis": "10730.20",
+            "expected_opening_basis": "19809.60",
+            "fx_account": "7310",
+            "revalued_account": "1110"
+          },
+          "message": "Booked 2,000.00 matches neither 10,730.20 (period-end vs average rate) nor 19,809.60 (period-end vs opening rate). Excluded from the expected amounts (GBP): the rate table lacks a period-end, average or opening rate needed to value it.",
+          "rule_id": "R007b",
+          "severity": "WARN",
+          "suggested_action": "Ask the preparer for the revaluation workings and which rate basis they used.",
+          "title": "Revaluation amount does not match either rate basis"
+        }
+      ],
+      "role": "explainer"
+    },
+    "system_prompt_version": "8e08270bff2b"
+  },
+  "response": {
+    "details": [
+      "The system already translates the EUR, GBP balances of account 1110 Cash and Cash Equivalents, so this 2,000.00 entry to account 7310 FX Gain/Loss - Unrealized would count the same FX gain or loss twice.",
+      "The booked amount of 2,000.00 does not match the expected revaluation of 10,730.20 (period-end versus average rate) or 19,809.60 (period-end versus opening rate). The GBP currency was excluded from expected amounts because a required rate was missing."
+    ],
+    "next_step": "Confirm with finance who owns FX revaluation; if the system translation stands, reject this entry. Also, ask the preparer for the revaluation workings and which rate basis they used.",
+    "summary": "This entry for 2,000.00 to account 1110 Cash and Cash Equivalents and 7310 FX Gain/Loss - Unrealized may cause a double-counting of FX revaluation, and the amount does not match expected revaluation calculations."
+  },
+  "role": "explainer"
+}

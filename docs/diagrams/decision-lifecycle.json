@@ -1,0 +1,157 @@
+{
+  "schema_version": 1,
+  "diagram_type": "lifecycle",
+  "meta": {
+    "title": "Life of One Journal Entry",
+    "locale": "en",
+    "quality_profile": "showcase",
+    "viewBox": [
+      1000,
+      640
+    ]
+  },
+  "lanes": [
+    {
+      "id": "main",
+      "label": "Automatic path"
+    },
+    {
+      "id": "review",
+      "label": "Human review"
+    },
+    {
+      "id": "terminal",
+      "label": "Final, not posted"
+    }
+  ],
+  "states": [
+    {
+      "id": "submitted",
+      "type": "start",
+      "label": "Submitted",
+      "sublabel": "entry loaded",
+      "lane": "main",
+      "col": 0,
+      "step": "01",
+      "tag": "input"
+    },
+    {
+      "id": "checked",
+      "type": "active",
+      "label": "Checked",
+      "sublabel": "R001-R012 + Intent Reviewer",
+      "lane": "main",
+      "col": 1,
+      "step": "02",
+      "tag": "validate"
+    },
+    {
+      "id": "decided",
+      "type": "decision",
+      "label": "Decided",
+      "sublabel": "decisions.decide",
+      "lane": "main",
+      "col": 2,
+      "step": "03",
+      "tag": "decide"
+    },
+    {
+      "id": "accepted",
+      "type": "active",
+      "label": "ACCEPTED",
+      "sublabel": "no BLOCK or ESCALATE",
+      "lane": "main",
+      "col": 3,
+      "step": "04",
+      "tag": "auto"
+    },
+    {
+      "id": "posted",
+      "type": "success",
+      "label": "Posted",
+      "sublabel": "to the adjusted ledger",
+      "lane": "main",
+      "col": 4,
+      "step": "05",
+      "tag": "final"
+    },
+    {
+      "id": "quarantined",
+      "type": "waiting",
+      "label": "QUARANTINED",
+      "sublabel": "waiting for a reviewer",
+      "lane": "review",
+      "col": 1,
+      "tag": "human"
+    },
+    {
+      "id": "rejected",
+      "type": "failure",
+      "label": "REJECTED",
+      "sublabel": "BLOCK, cannot be approved",
+      "lane": "terminal",
+      "col": 0,
+      "tag": "final"
+    },
+    {
+      "id": "human-rejected",
+      "type": "failure",
+      "label": "Rejected",
+      "sublabel": "by reviewer, final",
+      "lane": "terminal",
+      "col": 1,
+      "tag": "final"
+    }
+  ],
+  "transitions": [
+    {
+      "id": "t-escalate",
+      "from": "decided",
+      "to": "quarantined",
+      "label": "ESCALATE"
+    },
+    {
+      "id": "t-approve",
+      "from": "quarantined",
+      "to": "posted",
+      "label": "approved",
+      "variant": "emphasis"
+    },
+    {
+      "id": "t-block",
+      "from": "decided",
+      "to": "rejected",
+      "label": "BLOCK",
+      "variant": "security",
+      "labelDy": 24
+    },
+    {
+      "id": "t-human-reject",
+      "from": "quarantined",
+      "to": "human-rejected",
+      "label": "rejected",
+      "variant": "security",
+      "labelDy": 24
+    }
+  ],
+  "cards": [
+    {
+      "dot": "emerald",
+      "title": "How an entry gets posted",
+      "items": [
+        "Only INFO/WARN findings: ACCEPTED, posted automatically",
+        "Worst is ESCALATE: QUARANTINED; approval posts it with HUMAN lineage",
+        "Intent Reviewer (R013) can only add findings, never lower one"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Decisions are final",
+      "items": [
+        "Non-accepted entries get fix candidates; never auto-applied",
+        "Second decision: 409 already_decided; ACCEPTED/REJECTED: 400",
+        "To change an outcome, edit and resubmit as a new version"
+      ]
+    }
+  ]
+}

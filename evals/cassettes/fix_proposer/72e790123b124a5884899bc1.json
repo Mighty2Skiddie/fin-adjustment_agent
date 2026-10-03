@@ -1,0 +1,206 @@
+{
+  "key": "72e790123b124a5884899bc1d6561c14ba56c71ae3aec5bb0a54efaf0da8deee",
+  "model": "gemini-2.5-flash",
+  "provider": "google_genai",
+  "recorded_at": "2026-10-01T15:20:20Z",
+  "request": {
+    "payload": {
+      "coa_excerpt": [
+        {
+          "code": "1110",
+          "name": "Cash and Cash Equivalents",
+          "type": "Asset"
+        },
+        {
+          "code": "2110",
+          "name": "Accounts Payable",
+          "type": "Liability"
+        },
+        {
+          "code": "2120",
+          "name": "Accrued Expenses",
+          "type": "Liability"
+        },
+        {
+          "code": "2130",
+          "name": "Short-term Debt",
+          "type": "Liability"
+        },
+        {
+          "code": "2140",
+          "name": "Current Portion of Long-term Debt",
+          "type": "Liability"
+        },
+        {
+          "code": "2150",
+          "name": "Income Tax Payable",
+          "type": "Liability"
+        },
+        {
+          "code": "2160",
+          "name": "Deferred Revenue",
+          "type": "Liability"
+        },
+        {
+          "code": "2170",
+          "name": "Intercompany Payable",
+          "type": "Liability"
+        },
+        {
+          "code": "6100",
+          "name": "Salaries and Wages",
+          "type": "Expense"
+        },
+        {
+          "code": "6110",
+          "name": "Employee Benefits",
+          "type": "Expense"
+        },
+        {
+          "code": "6120",
+          "name": "Payroll Taxes",
+          "type": "Expense"
+        },
+        {
+          "code": "6200",
+          "name": "Rent Expense",
+          "type": "Expense"
+        },
+        {
+          "code": "6210",
+          "name": "Utilities",
+          "type": "Expense"
+        },
+        {
+          "code": "6220",
+          "name": "Office Supplies",
+          "type": "Expense"
+        },
+        {
+          "code": "6300",
+          "name": "Marketing and Advertising",
+          "type": "Expense"
+        },
+        {
+          "code": "6310",
+          "name": "Travel and Entertainment",
+          "type": "Expense"
+        },
+        {
+          "code": "6400",
+          "name": "Professional Fees",
+          "type": "Expense"
+        },
+        {
+          "code": "6410",
+          "name": "Insurance",
+          "type": "Expense"
+        },
+        {
+          "code": "6500",
+          "name": "Depreciation Expense",
+          "type": "Expense"
+        },
+        {
+          "code": "6510",
+          "name": "Amortization Expense",
+          "type": "Expense"
+        },
+        {
+          "code": "6600",
+          "name": "Bad Debt Expense",
+          "type": "Expense"
+        },
+        {
+          "code": "6900",
+          "name": "Other Operating Expenses",
+          "type": "Expense"
+        }
+      ],
+      "entry": {
+        "date": "2024-12-31",
+        "description": "<untrusted_data>Accrue utilities</untrusted_data>",
+        "id": "SYN-02",
+        "lines": [
+          {
+            "account": "6210",
+            "account_name": "Utilities",
+            "credit": "0.00",
+            "debit": "4200.01",
+            "line": 1,
+            "memo": "<untrusted_data>Utilities accrual</untrusted_data>"
+          },
+          {
+            "account": "2120",
+            "account_name": "Accrued Expenses",
+            "credit": "4200.00",
+            "debit": "0.00",
+            "line": 2,
+            "memo": "<untrusted_data>Accrued</untrusted_data>"
+          }
+        ],
+        "source": "<untrusted_data>AP</untrusted_data>",
+        "total_credit": "4200.00",
+        "total_debit": "4200.01"
+      },
+      "findings": [
+        {
+          "evidence": {
+            "difference": "0.01",
+            "total_credit": "4200.00",
+            "total_debit": "4200.01"
+          },
+          "message": "Debits total 4,200.01 but credits total 4,200.00, a difference of 0.01. We cannot tell which side is correct.",
+          "rule_id": "R001",
+          "severity": "BLOCK",
+          "suggested_action": "Ask the preparer which amount is right, then resubmit the entry.",
+          "title": "Entry does not balance"
+        }
+      ],
+      "role": "fix_proposer"
+    },
+    "system_prompt_version": "89120394b5e2"
+  },
+  "response": {
+    "candidates": [
+      {
+        "label": "Adjust credit to 4200.01",
+        "lines": [
+          {
+            "account": "6210",
+            "credit": "0.00",
+            "debit": "4200.01",
+            "memo": "Utilities accrual"
+          },
+          {
+            "account": "2120",
+            "credit": "4200.01",
+            "debit": "0.00",
+            "memo": "Accrued"
+          }
+        ],
+        "rationale": "This candidate adjusts the credit amount in line 2 to match the debit amount in line 1, resolving the imbalance."
+      },
+      {
+        "label": "Adjust debit to 4200.00",
+        "lines": [
+          {
+            "account": "6210",
+            "credit": "0.00",
+            "debit": "4200.00",
+            "memo": "Utilities accrual"
+          },
+          {
+            "account": "2120",
+            "credit": "4200.00",
+            "debit": "0.00",
+            "memo": "Accrued"
+          }
+        ],
+        "rationale": "This candidate adjusts the debit amount in line 1 to match the credit amount in line 2, resolving the imbalance."
+      }
+    ],
+    "needs_human_input": "The entry does not balance by 0.01. Is the correct amount 4200.01 or 4200.00?"
+  },
+  "role": "fix_proposer"
+}

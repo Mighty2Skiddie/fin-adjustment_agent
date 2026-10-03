@@ -87,13 +87,6 @@ class CoaTree:
             out.extend(self.leaf_codes_under(k))
         return out
 
-    def descendants(self, code: str) -> list[str]:
-        out: list[str] = []
-        for k in self._children.get(code, []):
-            out.append(k)
-            out.extend(self.descendants(k))
-        return out
-
     def name_of(self, code: str) -> str:
         acc = self._accounts.get(code)
         return acc.name if acc is not None else ""

@@ -1,0 +1,635 @@
+{
+  "adversarial_echo_cases": [],
+  "entries": [
+    {
+      "actual_decision": "ACCEPTED",
+      "actual_llm_rule_ids": [],
+      "actual_rule_ids": [
+        "R009"
+      ],
+      "category": "rules",
+      "expected_decision": "ACCEPTED",
+      "expected_llm_rule_ids": [],
+      "expected_rule_ids": [
+        "R009"
+      ],
+      "explanation_source": "none",
+      "id": "JE-001",
+      "llm_extra_allowed": [],
+      "match": true,
+      "source": "golden"
+    },
+    {
+      "actual_decision": "REJECTED",
+      "actual_llm_rule_ids": [],
+      "actual_rule_ids": [
+        "R001"
+      ],
+      "category": "rules",
+      "expected_decision": "REJECTED",
+      "expected_llm_rule_ids": [],
+      "expected_rule_ids": [
+        "R001"
+      ],
+      "explanation_source": "llm",
+      "id": "JE-002",
+      "llm_extra_allowed": [],
+      "match": true,
+      "source": "golden"
+    },
+    {
+      "actual_decision": "QUARANTINED",
+      "actual_llm_rule_ids": [],
+      "actual_rule_ids": [
+        "R007",
+        "R007b",
+        "R009"
+      ],
+      "category": "rules",
+      "expected_decision": "QUARANTINED",
+      "expected_llm_rule_ids": [],
+      "expected_rule_ids": [
+        "R007",
+        "R007b",
+        "R009"
+      ],
+      "explanation_source": "llm",
+      "id": "JE-003",
+      "llm_extra_allowed": [],
+      "match": true,
+      "source": "golden"
+    },
+    {
+      "actual_decision": "ACCEPTED",
+      "actual_llm_rule_ids": [],
+      "actual_rule_ids": [
+        "R009",
+        "R009"
+      ],
+      "category": "rules",
+      "expected_decision": "ACCEPTED",
+      "expected_llm_rule_ids": [],
+      "expected_rule_ids": [
+        "R009",
+        "R009"
+      ],
+      "explanation_source": "none",
+      "id": "JE-004",
+      "llm_extra_allowed": [],
+      "match": true,
+      "source": "golden"
+    },
+    {
+      "actual_decision": "QUARANTINED",
+      "actual_llm_rule_ids": [],
+      "actual_rule_ids": [
+        "R002",
+        "R002b"
+      ],
+      "category": "rules",
+      "expected_decision": "QUARANTINED",
+      "expected_llm_rule_ids": [],
+      "expected_rule_ids": [
+        "R002",
+        "R002b"
+      ],
+      "explanation_source": "llm",
+      "id": "JE-005",
+      "llm_extra_allowed": [],
+      "match": true,
+      "source": "golden"
+    },
+    {
+      "actual_decision": "ACCEPTED",
+      "actual_llm_rule_ids": [],
+      "actual_rule_ids": [
+        "R009"
+      ],
+      "category": "rules",
+      "expected_decision": "ACCEPTED",
+      "expected_llm_rule_ids": [],
+      "expected_rule_ids": [
+        "R009"
+      ],
+      "explanation_source": "none",
+      "id": "JE-006",
+      "llm_extra_allowed": [],
+      "match": true,
+      "source": "golden"
+    },
+    {
+      "actual_decision": "ACCEPTED",
+      "actual_llm_rule_ids": [],
+      "actual_rule_ids": [
+        "R009"
+      ],
+      "category": "rules",
+      "expected_decision": "ACCEPTED",
+      "expected_llm_rule_ids": [],
+      "expected_rule_ids": [
+        "R009"
+      ],
+      "explanation_source": "none",
+      "id": "JE-007",
+      "llm_extra_allowed": [],
+      "match": true,
+      "source": "golden"
+    },
+    {
+      "actual_decision": "REJECTED",
+      "actual_llm_rule_ids": [
+        "R013"
+      ],
+      "actual_rule_ids": [
+        "R005",
+        "R011"
+      ],
+      "category": "rules",
+      "expected_decision": "REJECTED",
+      "expected_llm_rule_ids": [
+        "R013"
+      ],
+      "expected_rule_ids": [
+        "R005",
+        "R011"
+      ],
+      "explanation_source": "llm",
+      "id": "JE-008",
+      "llm_extra_allowed": [],
+      "match": true,
+      "source": "golden"
+    },
+    {
+      "actual_decision": "ACCEPTED",
+      "actual_llm_rule_ids": [],
+      "actual_rule_ids": [],
+      "category": "rules",
+      "expected_decision": "ACCEPTED",
+      "expected_llm_rule_ids": [],
+      "expected_rule_ids": [],
+      "explanation_source": "none",
+      "id": "JE-009",
+      "llm_extra_allowed": [],
+      "match": true,
+      "source": "golden"
+    },
+    {
+      "actual_decision": "ACCEPTED",
+      "actual_llm_rule_ids": [],
+      "actual_rule_ids": [
+        "R009"
+      ],
+      "category": "rules",
+      "expected_decision": "ACCEPTED",
+      "expected_llm_rule_ids": [],
+      "expected_rule_ids": [
+        "R009"
+      ],
+      "explanation_source": "none",
+      "id": "JE-010",
+      "llm_extra_allowed": [],
+      "match": true,
+      "source": "golden"
+    },
+    {
+      "actual_decision": "ACCEPTED",
+      "actual_llm_rule_ids": [],
+      "actual_rule_ids": [],
+      "category": "rules",
+      "expected_decision": "ACCEPTED",
+      "expected_llm_rule_ids": [],
+      "expected_rule_ids": [],
+      "explanation_source": "none",
+      "id": "SYN-01",
+      "llm_extra_allowed": [],
+      "match": true,
+      "source": "synthetic"
+    },
+    {
+      "actual_decision": "REJECTED",
+      "actual_llm_rule_ids": [],
+      "actual_rule_ids": [
+        "R001"
+      ],
+      "category": "rules",
+      "expected_decision": "REJECTED",
+      "expected_llm_rule_ids": [],
+      "expected_rule_ids": [
+        "R001"
+      ],
+      "explanation_source": "llm",
+      "id": "SYN-02",
+      "llm_extra_allowed": [],
+      "match": true,
+      "source": "synthetic"
+    },
+    {
+      "actual_decision": "REJECTED",
+      "actual_llm_rule_ids": [],
+      "actual_rule_ids": [
+        "R003"
+      ],
+      "category": "rules",
+      "expected_decision": "REJECTED",
+      "expected_llm_rule_ids": [],
+      "expected_rule_ids": [
+        "R003"
+      ],
+      "explanation_source": "llm",
+      "id": "SYN-03",
+      "llm_extra_allowed": [],
+      "match": true,
+      "source": "synthetic"
+    },
+    {
+      "actual_decision": "REJECTED",
+      "actual_llm_rule_ids": [],
+      "actual_rule_ids": [
+        "R004"
+      ],
+      "category": "rules",
+      "expected_decision": "REJECTED",
+      "expected_llm_rule_ids": [],
+      "expected_rule_ids": [
+        "R004"
+      ],
+      "explanation_source": "llm",
+      "id": "SYN-04",
+      "llm_extra_allowed": [],
+      "match": true,
+      "source": "synthetic"
+    },
+    {
+      "actual_decision": "REJECTED",
+      "actual_llm_rule_ids": [
+        "R013"
+      ],
+      "actual_rule_ids": [
+        "R005"
+      ],
+      "category": "rules",
+      "expected_decision": "REJECTED",
+      "expected_llm_rule_ids": [],
+      "expected_rule_ids": [
+        "R005"
+      ],
+      "explanation_source": "llm",
+      "id": "SYN-05",
+      "llm_extra_allowed": [
+        "R013"
+      ],
+      "match": true,
+      "source": "synthetic"
+    },
+    {
+      "actual_decision": "QUARANTINED",
+      "actual_llm_rule_ids": [],
+      "actual_rule_ids": [
+        "R002",
+        "R002b",
+        "R012"
+      ],
+      "category": "rules",
+      "expected_decision": "QUARANTINED",
+      "expected_llm_rule_ids": [],
+      "expected_rule_ids": [
+        "R002",
+        "R002b",
+        "R012"
+      ],
+      "explanation_source": "llm",
+      "id": "SYN-06",
+      "llm_extra_allowed": [],
+      "match": true,
+      "source": "synthetic"
+    },
+    {
+      "actual_decision": "QUARANTINED",
+      "actual_llm_rule_ids": [],
+      "actual_rule_ids": [
+        "R007",
+        "R007b"
+      ],
+      "category": "rules",
+      "expected_decision": "QUARANTINED",
+      "expected_llm_rule_ids": [],
+      "expected_rule_ids": [
+        "R007",
+        "R007b"
+      ],
+      "explanation_source": "llm",
+      "id": "SYN-07",
+      "llm_extra_allowed": [],
+      "match": true,
+      "source": "synthetic"
+    },
+    {
+      "actual_decision": "ACCEPTED",
+      "actual_llm_rule_ids": [],
+      "actual_rule_ids": [],
+      "category": "rules",
+      "expected_decision": "ACCEPTED",
+      "expected_llm_rule_ids": [],
+      "expected_rule_ids": [],
+      "explanation_source": "none",
+      "id": "SYN-08",
+      "llm_extra_allowed": [],
+      "match": true,
+      "source": "synthetic"
+    },
+    {
+      "actual_decision": "REJECTED",
+      "actual_llm_rule_ids": [
+        "R013"
+      ],
+      "actual_rule_ids": [
+        "R001"
+      ],
+      "category": "rules",
+      "expected_decision": "REJECTED",
+      "expected_llm_rule_ids": [],
+      "expected_rule_ids": [
+        "R001"
+      ],
+      "explanation_source": "llm",
+      "id": "SYN-09",
+      "llm_extra_allowed": [
+        "R013"
+      ],
+      "match": true,
+      "source": "synthetic"
+    },
+    {
+      "actual_decision": "REJECTED",
+      "actual_llm_rule_ids": [
+        "R013"
+      ],
+      "actual_rule_ids": [
+        "R006"
+      ],
+      "category": "rules",
+      "expected_decision": "REJECTED",
+      "expected_llm_rule_ids": [],
+      "expected_rule_ids": [
+        "R006"
+      ],
+      "explanation_source": "llm",
+      "id": "SYN-10",
+      "llm_extra_allowed": [
+        "R013"
+      ],
+      "match": true,
+      "source": "synthetic"
+    },
+    {
+      "actual_decision": "REJECTED",
+      "actual_llm_rule_ids": [],
+      "actual_rule_ids": [
+        "R001",
+        "R006"
+      ],
+      "category": "rules",
+      "expected_decision": "REJECTED",
+      "expected_llm_rule_ids": [],
+      "expected_rule_ids": [
+        "R001",
+        "R006"
+      ],
+      "explanation_source": "llm",
+      "id": "SYN-11",
+      "llm_extra_allowed": [],
+      "match": true,
+      "source": "synthetic"
+    },
+    {
+      "actual_decision": "ACCEPTED",
+      "actual_llm_rule_ids": [],
+      "actual_rule_ids": [
+        "R010"
+      ],
+      "category": "rules",
+      "expected_decision": "ACCEPTED",
+      "expected_llm_rule_ids": [],
+      "expected_rule_ids": [
+        "R010"
+      ],
+      "explanation_source": "none",
+      "id": "SYN-12",
+      "llm_extra_allowed": [],
+      "match": true,
+      "source": "synthetic"
+    },
+    {
+      "actual_decision": "ACCEPTED",
+      "actual_llm_rule_ids": [],
+      "actual_rule_ids": [],
+      "category": "rules",
+      "expected_decision": "ACCEPTED",
+      "expected_llm_rule_ids": [],
+      "expected_rule_ids": [],
+      "explanation_source": "none",
+      "id": "SYN-13",
+      "llm_extra_allowed": [],
+      "match": true,
+      "source": "synthetic"
+    },
+    {
+      "actual_decision": "ACCEPTED",
+      "actual_llm_rule_ids": [],
+      "actual_rule_ids": [
+        "R009"
+      ],
+      "category": "rules",
+      "expected_decision": "ACCEPTED",
+      "expected_llm_rule_ids": [],
+      "expected_rule_ids": [
+        "R009"
+      ],
+      "explanation_source": "none",
+      "id": "SYN-14",
+      "llm_extra_allowed": [],
+      "match": true,
+      "source": "synthetic"
+    },
+    {
+      "actual_decision": "ACCEPTED",
+      "actual_llm_rule_ids": [],
+      "actual_rule_ids": [
+        "R008",
+        "R009",
+        "R009"
+      ],
+      "category": "rules",
+      "expected_decision": "ACCEPTED",
+      "expected_llm_rule_ids": [],
+      "expected_rule_ids": [
+        "R008",
+        "R009",
+        "R009"
+      ],
+      "explanation_source": "none",
+      "id": "SYN-15",
+      "llm_extra_allowed": [],
+      "match": true,
+      "source": "synthetic"
+    },
+    {
+      "actual_decision": "QUARANTINED",
+      "actual_llm_rule_ids": [
+        "R013"
+      ],
+      "actual_rule_ids": [],
+      "category": "intent",
+      "expected_decision": "QUARANTINED",
+      "expected_llm_rule_ids": [
+        "R013"
+      ],
+      "expected_rule_ids": [],
+      "explanation_source": "llm",
+      "id": "SYN-16",
+      "llm_extra_allowed": [],
+      "match": true,
+      "source": "synthetic"
+    },
+    {
+      "actual_decision": "ACCEPTED",
+      "actual_llm_rule_ids": [],
+      "actual_rule_ids": [],
+      "category": "intent",
+      "expected_decision": "ACCEPTED",
+      "expected_llm_rule_ids": [],
+      "expected_rule_ids": [],
+      "explanation_source": "none",
+      "id": "SYN-17",
+      "llm_extra_allowed": [],
+      "match": true,
+      "source": "synthetic"
+    }
+  ],
+  "faithfulness_violations": {},
+  "gate": "golden decision_accuracy == 1.0 and explanation faithfulness (numbers, codes) == 1.0",
+  "judge": null,
+  "passed": true,
+  "per_rule": {
+    "R001": {
+      "fn": 0,
+      "fp": 0,
+      "precision": "1.0000",
+      "recall": "1.0000",
+      "tp": 4
+    },
+    "R002": {
+      "fn": 0,
+      "fp": 0,
+      "precision": "1.0000",
+      "recall": "1.0000",
+      "tp": 2
+    },
+    "R002b": {
+      "fn": 0,
+      "fp": 0,
+      "precision": "1.0000",
+      "recall": "1.0000",
+      "tp": 2
+    },
+    "R003": {
+      "fn": 0,
+      "fp": 0,
+      "precision": "1.0000",
+      "recall": "1.0000",
+      "tp": 1
+    },
+    "R004": {
+      "fn": 0,
+      "fp": 0,
+      "precision": "1.0000",
+      "recall": "1.0000",
+      "tp": 1
+    },
+    "R005": {
+      "fn": 0,
+      "fp": 0,
+      "precision": "1.0000",
+      "recall": "1.0000",
+      "tp": 2
+    },
+    "R006": {
+      "fn": 0,
+      "fp": 0,
+      "precision": "1.0000",
+      "recall": "1.0000",
+      "tp": 2
+    },
+    "R007": {
+      "fn": 0,
+      "fp": 0,
+      "precision": "1.0000",
+      "recall": "1.0000",
+      "tp": 2
+    },
+    "R007b": {
+      "fn": 0,
+      "fp": 0,
+      "precision": "1.0000",
+      "recall": "1.0000",
+      "tp": 2
+    },
+    "R008": {
+      "fn": 0,
+      "fp": 0,
+      "precision": "1.0000",
+      "recall": "1.0000",
+      "tp": 1
+    },
+    "R009": {
+      "fn": 0,
+      "fp": 0,
+      "precision": "1.0000",
+      "recall": "1.0000",
+      "tp": 10
+    },
+    "R010": {
+      "fn": 0,
+      "fp": 0,
+      "precision": "1.0000",
+      "recall": "1.0000",
+      "tp": 1
+    },
+    "R011": {
+      "fn": 0,
+      "fp": 0,
+      "precision": "1.0000",
+      "recall": "1.0000",
+      "tp": 1
+    },
+    "R012": {
+      "fn": 0,
+      "fp": 0,
+      "precision": "1.0000",
+      "recall": "1.0000",
+      "tp": 1
+    }
+  },
+  "run_id": "0f6fe063474d",
+  "schema_errors": [],
+  "summary": {
+    "adversarial_echo_free": "1.0000",
+    "cases": {
+      "golden": 10,
+      "synthetic": 17
+    },
+    "cassette_miss_rate": "0.0000",
+    "decision_accuracy_golden": "1.0000",
+    "decision_accuracy_intent": "1.0000",
+    "decision_accuracy_synthetic_rules": "1.0000",
+    "explanation_faithfulness_codes": "1.0000",
+    "explanation_faithfulness_numbers": "1.0000",
+    "guardrail_fallback_rate": "0.0000",
+    "intent_reviewer_agreement_golden": "1.0000",
+    "llm_calls": 56,
+    "llm_judge_clarity": "n/a (live mode only)",
+    "llm_mode": "cassette",
+    "outputs_checked_for_faithfulness": 14,
+    "schema_validity": "1.0000"
+  }
+}

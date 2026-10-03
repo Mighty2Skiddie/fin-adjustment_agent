@@ -1,5 +1,5 @@
-"""H-FX-02: opening rates allow a translation-reserve (CTA) walk; noting they exist tells the
-reviewer what the prototype could, but does not, use them for."""
+"""H-FX-02: opening rates are present, so a translation-reserve (CTA) walk would be possible.
+This prototype does not build one; the finding tells the reviewer so."""
 
 from __future__ import annotations
 

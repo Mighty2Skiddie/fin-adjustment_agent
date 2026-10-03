@@ -1,5 +1,5 @@
 """H-TB-06: an intercompany balance in a single-entity TB cannot be eliminated without the
-counterparty's books, so it is flagged and left un-eliminated (A14)."""
+counterparty's books, so it is flagged and left un-eliminated (ASSUMPTIONS A14)."""
 
 from __future__ import annotations
 

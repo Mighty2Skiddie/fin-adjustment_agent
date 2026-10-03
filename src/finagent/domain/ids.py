@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import hashlib
+import os
 import subprocess
 import uuid
 from pathlib import Path
@@ -23,7 +24,7 @@ def canonical_json(obj: object) -> bytes:
 
 
 def run_id(input_hashes: dict[str, str], config_hash: str, code_version: str) -> str:
-    """sha256(canonical JSON of inputs + config + code version)[:12] (CLAUDE.md rule 7)."""
+    """sha256(canonical JSON of inputs + config + code version)[:12] (engineering rule 7)."""
     payload = {"inputs": input_hashes, "config": config_hash, "code": code_version}
     return sha256_bytes(canonical_json(payload))[:12]
 
@@ -38,18 +39,37 @@ def decision_id() -> str:
     return uuid.uuid4().hex
 
 
-def code_version(repo: Path | None = None) -> str:
-    """Short git sha, or "nogit" when not in a repository (e.g. inside the container)."""
+def _git(args: list[str], repo: Path | None) -> str | None:
     try:
         out = subprocess.run(
-            ["git", "rev-parse", "--short", "HEAD"],
-            cwd=repo,
-            capture_output=True,
-            text=True,
-            timeout=5,
-            check=False,
+            ["git", *args], cwd=repo, capture_output=True, text=True, timeout=5, check=False
         )
     except (OSError, subprocess.SubprocessError):
+        return None
+    return out.stdout.strip() if out.returncode == 0 else None
+
+
+def source_hash(src: Path) -> str:
+    """Content hash of the package source, so uncommitted code changes still change run_id."""
+    h = hashlib.sha256()
+    for p in sorted(src.rglob("*")):
+        if p.is_file() and p.suffix in {".py", ".md"}:
+            h.update(p.relative_to(src).as_posix().encode())
+            h.update(p.read_bytes().replace(b"\r\n", b"\n"))
+    return h.hexdigest()[:8]
+
+
+def code_version(repo: Path | None = None) -> str:
+    """Short git sha; `<sha>+<src hash>` when src/ has uncommitted changes; "nogit" outside git.
+
+    Override with FINAGENT_CODE_VERSION (e.g. in the container, where .git is absent).
+    """
+    override = os.environ.get("FINAGENT_CODE_VERSION")
+    if override:
+        return override
+    sha = _git(["rev-parse", "--short", "HEAD"], repo)
+    if not sha:
         return "nogit"
-    sha = out.stdout.strip()
-    return sha if out.returncode == 0 and sha else "nogit"
+    src = Path(__file__).resolve().parents[1]
+    dirty = _git(["status", "--porcelain", "--", str(src)], repo)
+    return f"{sha}+{source_hash(src)}" if dirty else sha

@@ -7,20 +7,19 @@ would rank it at 100 and propose a mapping to an account nobody can post to.
 
 from __future__ import annotations
 
-from decimal import ROUND_HALF_UP, Decimal
+from decimal import Decimal
 
 from rapidfuzz import fuzz
 
 from finagent.domain.coa_tree import CoaTree
 from finagent.domain.models import CoaAccount
-
-_SCORE_QUANT = Decimal("0.01")
+from finagent.domain.money import dstr, q
 
 
 def _score(query: str, name: str) -> Decimal:
     raw = fuzz.token_set_ratio(query.lower(), name.lower())
     pct = Decimal(int(round(raw)))
-    return (pct / Decimal(100)).quantize(_SCORE_QUANT, rounding=ROUND_HALF_UP)
+    return q(pct / 100)
 
 
 def _distance(code: str, hint: str | None) -> int:
@@ -49,6 +48,4 @@ def rank_candidates(
     return scored[:limit]
 
 
-def score_str(d: Decimal) -> str:
-    """Evidence form of a match score: `0.86`."""
-    return str(d.quantize(_SCORE_QUANT, rounding=ROUND_HALF_UP))
+score_str = dstr  # evidence form of a match score: `0.86`

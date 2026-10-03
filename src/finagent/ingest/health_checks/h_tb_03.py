@@ -1,5 +1,6 @@
 """H-TB-03: a TB account missing from the chart of accounts cannot roll up into any subtotal, so
-it is carried in an UNMAPPED bucket (A6) and must be mapped by a person, never guessed."""
+it is carried in an UNMAPPED bucket (ASSUMPTIONS A6) and must be mapped by a person, never
+guessed."""
 
 from __future__ import annotations
 

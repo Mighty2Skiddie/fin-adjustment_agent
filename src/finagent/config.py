@@ -8,19 +8,18 @@ reviewable diff, not a code change. Environment overrides use the `FINAGENT__` p
 
 from __future__ import annotations
 
-import hashlib
 import os
 import re
 from decimal import Decimal
-from functools import lru_cache
 from pathlib import Path
 from typing import Any, Literal
 
-import orjson
 import yaml
 from pydantic import BaseModel, ConfigDict, field_validator
 from pydantic.fields import FieldInfo
 from pydantic_settings import BaseSettings, PydanticBaseSettingsSource, SettingsConfigDict
+
+from finagent.domain.ids import canonical_json, sha256_bytes
 
 
 def find_root() -> Path:
@@ -97,12 +96,18 @@ class ThresholdSettings(BaseModel):
 
 class LlmSettings(BaseModel):
     model_config = ConfigDict(frozen=True)
-    mode: Literal["cassette", "live", "off"] = "cassette"
+    mode: Literal["cassette", "live", "record", "off"] = "cassette"
     provider: str = "google_genai"
     model: str = "gemini-2.5-flash"
+    fallback_provider: str | None = "groq"
+    fallback_model: str | None = "openai/gpt-oss-120b"
+    intent_escalate_confidence: Decimal = Decimal("0.70")
+    timeout_s: int = 60
     temperature: int = 0
     max_retries: int = 1
     cassette_dir: str = "evals/cassettes"
+
+    _dec = field_validator("intent_escalate_confidence", mode="before")(_decimal_from_str)
 
 
 class ObservabilitySettings(BaseModel):
@@ -126,8 +131,9 @@ class _YamlSource(PydanticBaseSettingsSource):
         for env_name, key in (("LLM_MODE", "mode"), ("LLM_PROVIDER", "provider")):
             if os.environ.get(env_name):
                 llm[key] = os.environ[env_name]
-        if not llm.get("model"):
-            llm.pop("model", None)
+        for key in ("model", "fallback_provider", "fallback_model"):
+            if not llm.get(key):
+                llm.pop(key, None)
         data["llm"] = llm
         return data
 
@@ -159,12 +165,9 @@ class Settings(BaseSettings):
     ) -> tuple[PydanticBaseSettingsSource, ...]:
         return (init_settings, env_settings, _YamlSource(settings_cls, _config_path))
 
-    def canonical_json(self) -> bytes:
-        """Stable serialisation used for the config hash in `run_id`."""
-        return orjson.dumps(self.model_dump(mode="json"), option=orjson.OPT_SORT_KEYS)
-
     def config_hash(self) -> str:
-        return hashlib.sha256(self.canonical_json()).hexdigest()
+        """Hash of the canonical settings JSON; part of `run_id`."""
+        return sha256_bytes(canonical_json(self.model_dump(mode="json")))
 
 
 def load_settings(overrides: dict[str, Any] | None = None, path: Path | None = None) -> Settings:
@@ -172,18 +175,3 @@ def load_settings(overrides: dict[str, Any] | None = None, path: Path | None = N
     global _config_path
     _config_path = path or DEFAULT_CONFIG
     return Settings(**(overrides or {}))
-
-
-@lru_cache(maxsize=1)
-def get_settings() -> Settings:
-    return load_settings()
-
-
-def deep_merge(base: dict[str, Any], extra: dict[str, Any]) -> dict[str, Any]:
-    out = dict(base)
-    for k, v in extra.items():
-        if isinstance(v, dict) and isinstance(out.get(k), dict):
-            out[k] = deep_merge(out[k], v)  # pyright: ignore[reportUnknownArgumentType]
-        else:
-            out[k] = v
-    return out
