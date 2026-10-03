@@ -131,11 +131,7 @@ docker run -p 7860:7860 fin-adjustments-agent
 
 The image builds the web screen, then serves the API and the screen from one program on port 7860. It runs in cassette mode, so no secrets are needed. Full steps and a problem-solving table: [`docs/DEPLOY.md`](docs/DEPLOY.md).
 
-## Hugging Face Spaces
 
-Live demo: `<your-space-url>`
-
-The same Dockerfile runs as a Hugging Face Docker Space without changes. Steps: [`docs/DEPLOY.md`](docs/DEPLOY.md).
 
 ## Screenshots
 
